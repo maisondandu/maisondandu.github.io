@@ -1028,7 +1028,7 @@ function loadStock(){
 }
 /* ===== Avis clients (lecture opensheet + envoi via Apps Script) ===== */
 const REVIEWS_GET='https://opensheet.elk.sh/1tfuZzdrdjV5IHpaWn4V2CIALDSwy6hkXVjeEtNQTo4U/Avis';
-const REVIEWS_POST=''; // URL du web-app Google Apps Script (à remplir après déploiement)
+const REVIEWS_POST='https://script.google.com/macros/s/AKfycbzO-c4psenhx_q76-iodscvEjxqjCeqvHJFAUcXk_3-gEf-QdTQReDiC4tzoqXtkPSQSw/exec';
 let REVIEWS=[];
 function starStr(n){n=Math.max(0,Math.min(5,Math.round(n)||0));return '★★★★★'.slice(0,n)+'☆☆☆☆☆'.slice(0,5-n);}
 function escHtml(s){return String(s==null?'':s).replace(/[<>&]/g,function(c){return c==='<'?'&lt;':c==='>'?'&gt;':'&amp;';});}
