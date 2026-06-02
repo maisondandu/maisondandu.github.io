@@ -16,10 +16,13 @@
 <meta property="og:locale" content="fr_FR">
 <meta property="og:title" content="DANDU — Maroquinerie Artisanale du Cameroun">
 <meta property="og:description" content="Sacs à dos Zona en cuir grainé et claquettes Yao Boy, façonnés à la main à Yaoundé. L'élégance africaine, le savoir-faire camerounais.">
-<!-- Astuce : une fois le site en ligne, ajoutez une image d'aperçu, ex. <meta property="og:image" content="https://VOTRE-SITE.com/sac-zona.jpg"> -->
+<meta property="og:url" content="https://maisondandu.github.io/">
+<meta property="og:image" content="https://maisondandu.github.io/assets/hero-zona-1.jpg">
+<meta property="og:image:alt" content="DANDU — Sac à dos Zona en cuir artisanal">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="DANDU — Maroquinerie Artisanale du Cameroun">
 <meta name="twitter:description" content="Sacs à dos Zona en cuir et claquettes Yao Boy, façonnés à la main à Yaoundé.">
+<meta name="twitter:image" content="https://maisondandu.github.io/assets/hero-zona-1.jpg">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23A0522D'/><text x='50' y='50' dy='.35em' text-anchor='middle' font-family='Georgia,serif' font-weight='bold' font-size='58' fill='%23F2EAD8'>D</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -714,21 +717,21 @@ footer p{font-size:0.82rem;color:rgba(255,255,255,0.5);line-height:1.8;}
 
       <form id="candForm" action="https://formsubmit.co/expert.judicael@gmail.com" method="POST" enctype="multipart/form-data">
         <div class="form-row">
-          <div class="form-group"><label data-i18n="cand.firstname">Prénom</label><input type="text" placeholder="Votre prénom" id="c-prenom" name="Prenom" required></div>
-          <div class="form-group"><label data-i18n="cand.lastname">Nom</label><input type="text" placeholder="Votre nom" id="c-nom" name="Nom" required></div>
+          <div class="form-group"><label data-i18n="cand.firstname">Prénom</label><input type="text" placeholder="Votre prénom" data-i18n-ph="ph.firstname" id="c-prenom" name="Prenom" required></div>
+          <div class="form-group"><label data-i18n="cand.lastname">Nom</label><input type="text" placeholder="Votre nom" data-i18n-ph="ph.lastname" id="c-nom" name="Nom" required></div>
         </div>
-        <div class="form-group"><label data-i18n="cand.email">Adresse e-mail</label><input type="email" placeholder="votre@email.com" id="c-email" name="Email" required></div>
-        <div class="form-group"><label data-i18n="cand.phone">Téléphone</label><input type="tel" placeholder="+237 6XX XXX XXX" id="c-tel" name="Telephone"></div>
+        <div class="form-group"><label data-i18n="cand.email">Adresse e-mail</label><input type="email" placeholder="votre@email.com" data-i18n-ph="ph.email" id="c-email" name="Email" required></div>
+        <div class="form-group"><label data-i18n="cand.phone">Téléphone</label><input type="tel" placeholder="+237 6XX XXX XXX" data-i18n-ph="ph.phone" id="c-tel" name="Telephone"></div>
         <div class="form-group">
           <label data-i18n="cand.role">Poste souhaité</label>
           <select id="c-poste" name="Poste souhaite">
-            <option value="">Sélectionner un domaine</option>
-            <option>Artisan maroquinier</option>
-            <option>Design & Création</option>
-            <option>Commercial / Vente</option>
-            <option>Communication & Marketing</option>
-            <option>Gestion & Administration</option>
-            <option>Autre</option>
+            <option value="" data-i18n="cand.opt0">Sélectionner un domaine</option>
+            <option data-i18n="cand.opt1">Artisan maroquinier</option>
+            <option data-i18n="cand.opt2">Design & Création</option>
+            <option data-i18n="cand.opt3">Commercial / Vente</option>
+            <option data-i18n="cand.opt4">Communication & Marketing</option>
+            <option data-i18n="cand.opt5">Gestion & Administration</option>
+            <option data-i18n="cand.opt6">Autre</option>
           </select>
         </div>
         <div class="form-group">
@@ -743,7 +746,7 @@ footer p{font-size:0.82rem;color:rgba(255,255,255,0.5);line-height:1.8;}
         </div>
         <div class="form-group">
           <label data-i18n="cand.message">Lettre de motivation / Commentaire</label>
-          <textarea rows="5" id="c-message" name="Message" placeholder="Parlez-nous de votre parcours, de vos motivations et de ce que vous souhaitez apporter à la Maison Dandu..." style="resize:vertical;"></textarea>
+          <textarea rows="5" id="c-message" data-i18n-ph="ph.message" name="Message" placeholder="Parlez-nous de votre parcours, de vos motivations et de ce que vous souhaitez apporter à la Maison Dandu..." style="resize:vertical;"></textarea>
         </div>
         <input type="hidden" name="_subject" value="Nouvelle candidature - DANDU">
         <input type="hidden" name="_captcha" value="false">
@@ -869,21 +872,21 @@ footer p{font-size:0.82rem;color:rgba(255,255,255,0.5);line-height:1.8;}
         <div class="success-ref" id="successRef"></div>
       </div>
       <div id="checkoutForm">
-        <div class="order-summary"><h4 data-i18n="ck.summary">Récapitulatif</h4><div id="orderItems"></div><div class="order-item total"><span>Total</span><span class="price" id="orderTotal">0 FCFA</span></div></div>
+        <div class="order-summary"><h4 data-i18n="ck.summary">Récapitulatif</h4><div id="orderItems"></div><div class="order-item total"><span data-i18n="ck.total">Total</span><span class="price" id="orderTotal">0 FCFA</span></div></div>
         <div class="form-group">
           <label data-i18n="ck.method">Mode de paiement souhaité</label>
           <select id="ck-method">
-            <option value="Orange Money">🟠 Orange Money</option>
-            <option value="Paiement à la livraison">🚚 Paiement à la livraison</option>
-            <option value="Retrait en boutique (Dovv Simbock, Yaoundé)">🏪 Retrait en boutique</option>
+            <option value="Orange Money" data-i18n="ck.opt.orange">🟠 Orange Money</option>
+            <option value="Paiement à la livraison" data-i18n="ck.opt.cod">🚚 Paiement à la livraison</option>
+            <option value="Retrait en boutique (Dovv Simbock, Yaoundé)" data-i18n="ck.opt.pickup">🏪 Retrait en boutique</option>
           </select>
         </div>
         <div class="form-row">
-          <div class="form-group"><label data-i18n="ck.name">Nom complet *</label><input type="text" placeholder="Prénom Nom" id="ck-name"></div>
-          <div class="form-group"><label data-i18n="ck.phone">Téléphone (WhatsApp) *</label><input type="tel" placeholder="+237 6XX XXX XXX" id="ck-phone"></div>
+          <div class="form-group"><label data-i18n="ck.name">Nom complet *</label><input type="text" placeholder="Prénom Nom" data-i18n-ph="ph.ckname" id="ck-name"></div>
+          <div class="form-group"><label data-i18n="ck.phone">Téléphone (WhatsApp) *</label><input type="tel" placeholder="+237 6XX XXX XXX" data-i18n-ph="ph.phone" id="ck-phone"></div>
         </div>
-        <div class="form-group"><label data-i18n="ck.city">Ville / Quartier (pour la livraison)</label><input type="text" placeholder="Ex : Yaoundé, Simbock" id="ck-city"></div>
-        <div class="form-group"><label data-i18n="ck.note">Précisions (optionnel)</label><textarea rows="3" id="ck-note" placeholder="Une couleur, une précision de livraison, un message..." style="resize:vertical;"></textarea></div>
+        <div class="form-group"><label data-i18n="ck.city">Ville / Quartier (pour la livraison)</label><input type="text" placeholder="Ex : Yaoundé, Simbock" data-i18n-ph="ph.ckcity" id="ck-city"></div>
+        <div class="form-group"><label data-i18n="ck.note">Précisions (optionnel)</label><textarea rows="3" id="ck-note" data-i18n-ph="ph.cknote" placeholder="Une couleur, une précision de livraison, un message..." style="resize:vertical;"></textarea></div>
         <div class="store-box" style="margin-bottom:1rem;"><p data-i18n="ck.waNote">🟢 En validant, votre commande s'ouvre dans <strong>WhatsApp</strong> avec le récapitulatif déjà rempli. Vous n'avez plus qu'à envoyer le message : la Maison DANDU vous recontacte pour le paiement et la livraison.</p></div>
         <button class="submit-btn sub-orange" onclick="sendOrderWhatsApp()" data-i18n="ck.submit">Commander sur WhatsApp 🟢</button>
       </div>
@@ -1004,16 +1007,16 @@ function toggleHam(){const btn=document.getElementById('hamBtn');const nav=docum
 function closeHam(){const btn=document.getElementById('hamBtn');if(btn)btn.classList.remove('open');const nav=document.getElementById('mobNav');if(nav)nav.classList.remove('active');if(!document.querySelector('.page-overlay.active,.modal-overlay.active'))document.body.style.overflow='';}
 
 
-function openCheckout(method){closeModal('cart');if(!cart.length){showToast('⚠️','Votre panier est vide');return;}document.getElementById('checkoutTitle').textContent=tt('orderTitle');document.getElementById('orderItems').innerHTML=cart.map(i=>`<div class="order-item"><span>${i.name} (${i.color}) ×${i.qty}</span><span>${(i.price*i.qty).toLocaleString('fr-FR')} FCFA</span></div>`).join('');document.getElementById('orderTotal').textContent=cart.reduce((s,i)=>s+i.price*i.qty,0).toLocaleString('fr-FR')+' FCFA';const _m={orange:'Orange Money',visa:'Paiement à la livraison',store:'Retrait en boutique (Dovv Simbock, Yaoundé)'};const _sel=document.getElementById('ck-method');if(_sel&&_m[method])_sel.value=_m[method];document.getElementById('checkoutForm').style.display='block';document.getElementById('checkoutSuccess').classList.remove('show');document.getElementById('checkoutModal').classList.add('active');}
+function openCheckout(method){closeModal('cart');if(!cart.length){showToast('⚠️',LANG==='en'?'Your cart is empty':'Votre panier est vide');return;}document.getElementById('checkoutTitle').textContent=tt('orderTitle');document.getElementById('orderItems').innerHTML=cart.map(i=>`<div class="order-item"><span>${i.name} (${i.color}) ×${i.qty}</span><span>${(i.price*i.qty).toLocaleString('fr-FR')} FCFA</span></div>`).join('');document.getElementById('orderTotal').textContent=cart.reduce((s,i)=>s+i.price*i.qty,0).toLocaleString('fr-FR')+' FCFA';const _m={orange:'Orange Money',visa:'Paiement à la livraison',store:'Retrait en boutique (Dovv Simbock, Yaoundé)'};const _sel=document.getElementById('ck-method');if(_sel&&_m[method])_sel.value=_m[method];document.getElementById('checkoutForm').style.display='block';document.getElementById('checkoutSuccess').classList.remove('show');document.getElementById('checkoutModal').classList.add('active');}
 function switchTab(m){['orange','visa','store'].forEach(t=>{document.getElementById('tab-'+t).classList.remove('active');document.getElementById('panel-'+t).classList.remove('active');});document.getElementById('tab-'+m).classList.add('active');document.getElementById('panel-'+m).classList.add('active');}
 const WHATSAPP_NUMBER='237621213280';
 function sendOrderWhatsApp(){
-  if(!cart.length){showToast('⚠️','Votre panier est vide');return;}
+  if(!cart.length){showToast('⚠️',LANG==='en'?'Your cart is empty':'Votre panier est vide');return;}
   const name=(document.getElementById('ck-name').value||'').trim();
   const phone=(document.getElementById('ck-phone').value||'').trim();
-  if(!name||!phone){showToast('⚠️','Indiquez votre nom et votre téléphone');return;}
+  if(!name||!phone){showToast('⚠️',LANG==='en'?'Enter your name and phone number':'Indiquez votre nom et votre téléphone');return;}
   const phoneClean=phone.replace(/[\s\-\(\)]/g,'');
-  if(!/^[+\d]{8,15}$/.test(phoneClean)){showToast('⚠️','Numéro de téléphone invalide');document.getElementById('ck-phone').focus();return;}
+  if(!/^[+\d]{8,15}$/.test(phoneClean)){showToast('⚠️',LANG==='en'?'Invalid phone number':'Numéro de téléphone invalide');document.getElementById('ck-phone').focus();return;}
   const city=(document.getElementById('ck-city').value||'').trim();
   const note=(document.getElementById('ck-note').value||'').trim();
   const method=document.getElementById('ck-method').value;
@@ -1037,9 +1040,9 @@ function sendOrderWhatsApp(){
   const url='https://wa.me/'+WHATSAPP_NUMBER+'?text='+encodeURIComponent(lines.join(NL));
   window.open(url,'_blank');
   document.getElementById('successIcon').textContent='\uD83D\uDFE2';
-  document.getElementById('successTitle').textContent='Commande envoyee sur WhatsApp !';
-  document.getElementById('successDesc').textContent="Votre message s'ouvre dans WhatsApp. Finalisez l'envoi pour que la Maison DANDU vous recontacte (paiement et livraison).";
-  document.getElementById('successRef').textContent='Ref : '+ref;
+  document.getElementById('successTitle').textContent=LANG==='en'?'Order sent on WhatsApp!':'Commande envoyée sur WhatsApp !';
+  document.getElementById('successDesc').textContent=LANG==='en'?"Your message opens in WhatsApp. Send it so the House of DANDU can get back to you (payment & delivery).":"Votre message s'ouvre dans WhatsApp. Finalisez l'envoi pour que la Maison DANDU vous recontacte (paiement et livraison).";
+  document.getElementById('successRef').textContent=(LANG==='en'?'Ref: ':'Réf : ')+ref;
   document.getElementById('checkoutForm').style.display='none';
   document.getElementById('checkoutSuccess').classList.add('show');
   cart=[];updateCartUI();
@@ -1100,6 +1103,9 @@ const PRODUCTS_EN={
  3:{category:'Roll-top backpack — DANDU',desc:'Roll-top backpack in saffron woven fabric and brown leather, with a large leather front pocket and adjustable straps. Handcrafted in Yaoundé.',features:['Artisanal saffron-dyed woven fabric','Genuine brown leather (pocket & base)','Roll-top closure + adjustable straps','Reinforced carry handle','Embossed DANDU monogram','Unique handmade piece']}
 };
 const I18N={en:{
+ 'cand.opt0':'Select a field','cand.opt1':'Leather artisan','cand.opt2':'Design & Creation','cand.opt3':'Sales','cand.opt4':'Communication & Marketing','cand.opt5':'Management & Administration','cand.opt6':'Other',
+ 'ck.opt.orange':'🟠 Orange Money','ck.opt.cod':'🚚 Cash on delivery','ck.opt.pickup':'🏪 In-store pickup','ck.total':'Total',
+ 'ph.firstname':'Your first name','ph.lastname':'Your last name','ph.email':'you@email.com','ph.phone':'+237 6XX XXX XXX','ph.message':'Tell us about your background, your motivations and what you would bring to the House of Dandu...','ph.ckname':'First name Last name','ph.ckcity':'E.g. Yaoundé, Simbock','ph.cknote':'A colour, a delivery detail, a message...',
  'nav.collections':'Collections','nav.house':'Our House','nav.story':'Our Story','nav.catalogue':'Catalogue','nav.events':'Major Events','nav.payment':'Payment','nav.careers':'Careers','nav.cart':'🛍 Cart',
  'hero.tag':'✦ Artisanal Leather Goods · Yaoundé, Cameroon','hero.h1':'The <em>Zona Bag</em> —<br>African elegance<br>on your back.','hero.sub':'Premium grained leather, Cameroonian craftsmanship, timeless urban design.','hero.discover':'Discover','hero.seeZona':'See the Zona',
  'col.title':'Our Creations','col.subtitle':'Backpacks &amp; sandals · Artisanal leather from Cameroon',
@@ -1121,6 +1127,11 @@ function setLang(lang){
     var k=el.getAttribute('data-i18n');
     if(el.dataset.fr===undefined) el.dataset.fr=el.innerHTML;
     el.innerHTML=(LANG==='en'&&I18N.en[k]!==undefined)?I18N.en[k]:el.dataset.fr;
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(function(el){
+    var k=el.getAttribute('data-i18n-ph');
+    if(el.dataset.phFr===undefined) el.dataset.phFr=el.getAttribute('placeholder')||'';
+    el.setAttribute('placeholder',(LANG==='en'&&I18N.en[k]!==undefined)?I18N.en[k]:el.dataset.phFr);
   });
   products.forEach(function(p){
     if(!p._fr) p._fr={category:p.category,desc:p.desc,features:p.features.slice()};
