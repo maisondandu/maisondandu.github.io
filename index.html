@@ -1065,6 +1065,21 @@ function submitReview(){
   document.getElementById('reviewSuccess').classList.add('show');
   document.getElementById('rev-name').value='';document.getElementById('rev-text').value='';
 }
+/* ===== Photos Yao Boy depuis les dossiers (assets/yao-boy/<couleur>/ + manifest.json) ===== */
+function loadYaoPhotos(){
+  fetch('assets/yao-boy/manifest.json?v='+Date.now()).then(function(r){return r.json();}).then(function(m){
+    var yao=products.find(function(p){return p.id===2;});if(!yao)return;
+    var commun=(m.commun||[]).map(function(f){return 'assets/yao-boy/commun/'+f;});
+    var map={'Noir':'noir','Marron':'marron','Vert':'vert'};
+    Object.keys(map).forEach(function(label){
+      var k=map[label];
+      var arr=((m[k]||[]).map(function(f){return 'assets/yao-boy/'+k+'/'+f;})).concat(commun);
+      if(arr.length) yao.imgs[label]=arr;
+    });
+    if(typeof renderProducts==='function')renderProducts();
+    if(typeof currentPageProduct!=='undefined'&&currentPageProduct&&currentPageProduct.id===2&&document.getElementById('page-product')&&document.getElementById('page-product').classList.contains('active'))openProductPage(2);
+  }).catch(function(){});
+}
 function renderProducts(){
   document.getElementById('productsGrid').innerHTML=products.map(p=>{
     const imgs=p.imgs[p.selectedColor];
@@ -1277,6 +1292,7 @@ function setLang(lang){
 renderProducts();
 loadStock();
 loadReviews();
+loadYaoPhotos();
 (function(){var c=document.querySelector('.reviews-cta');if(c&&!REVIEWS_POST)c.style.display='none';})();
 goSlide(0);
 renderCatalogue();
