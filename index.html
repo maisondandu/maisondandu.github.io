@@ -1040,7 +1040,7 @@ function isOut(id){return STOCK[id]!==undefined && STOCK[id]<=0;}
 function loadStock(){
   fetch(STOCK_URL).then(function(r){return r.json();}).then(function(rows){
     if(!Array.isArray(rows))return;
-    rows.forEach(function(row){var id=String(row.id==null?'':row.id).trim();var q=parseInt(row.quantite,10);if(!isNaN(q)&&id)STOCK[id]=q;var pr=parseInt(String(row.Prix||row.prix||row.PRIX||'').replace(/[^0-9]/g,''),10);if(!isNaN(pr)&&pr>0){var p=products.find(function(x){return String(x.id)===id;});if(p)p.price=pr;}});
+    rows.forEach(function(row){var id=String(row.id==null?'':row.id).trim();if(!id)return;var q=parseInt(row.quantite,10);if(!isNaN(q))STOCK[id]=q;var p=products.find(function(x){return String(x.id)===id;});if(!p)return;var pr=parseInt(String(row['Prix en FCFA']||row['Prix en fcfa']||row.Prix||row.prix||row.PRIX||'').replace(/[^0-9]/g,''),10);if(!isNaN(pr)&&pr>0)p.price=pr;var pe=parseMoneyFR(row['Prix en Euro']||row['Prix en euro']||row['Prix Euro']||row['Prix euro']||row.Euro||row.euro||row.EUR);if(!isNaN(pe)&&pe>0)p.priceEUR=pe;});
     if(typeof renderProducts==='function')renderProducts();
     if(typeof currentPageProduct!=='undefined'&&currentPageProduct&&document.getElementById('page-product')&&document.getElementById('page-product').classList.contains('active'))openProductPage(currentPageProduct.id);
   }).catch(function(){});
@@ -1105,7 +1105,7 @@ function renderProducts(){
     const imgs=p.imgs[p.selectedColor];
     const dots=imgs.map((_,i)=>`<div class="gallery-dot ${i===0?'active':''}" onclick="galleryGo(${p.id},${i})"></div>`).join('');
     const out=isOut(p.id);
-    return`<div class="product-card" id="card-${p.id}"><div class="product-gallery" id="gallery-${p.id}" onclick="if(!event.target.closest('.gallery-arrow,.gallery-dot'))openProductPage(${p.id})"><div class="gallery-slides" id="slides-${p.id}">${imgs.map((src,i)=>`<div class="gallery-slide ${i===0?'active':''}"><img src="${src}" alt="${p.name}" loading="lazy"></div>`).join('')}</div><button class="gallery-arrow prev" onclick="galleryGo(${p.id},galleryCurrent[${p.id}]-1)">‹</button><button class="gallery-arrow next" onclick="galleryGo(${p.id},galleryCurrent[${p.id}]+1)">›</button><div class="gallery-nav" id="gdots-${p.id}">${dots}</div>${out?`<span class="product-badge out">${tt('outOfStock')}</span>`:(p.badge?`<span class="product-badge">${p.badge}</span>`:'')}</div><div class="product-info"><div class="product-category">${p.category}</div><div class="product-name" style="cursor:pointer" onclick="openProductPage(${p.id})">${p.name}</div><div class="product-desc">${p.desc}</div><button class="detail-link" onclick="openProductPage(${p.id})">${tt('details')}</button><div class="color-selector"><span class="color-label">${tt('color')}</span><div class="color-options">${p.colors.map(c=>`<div class="color-swatch ${c.key} ${p.selectedColor===c.label?'active':''}" title="${c.label}" role="button" aria-label="Couleur ${c.label}" onclick="selectColor(${p.id},'${c.label}',this)"></div>`).join('')}</div><span class="selected-color" id="color-label-${p.id}">${p.selectedColor}</span></div><div class="product-footer"><div class="product-price">${formatPrice(p.price)}<span class="delivery">${delLabel(p)}</span></div>${out?`<button class="add-btn" disabled style="opacity:.45;cursor:not-allowed">${tt('outOfStock')}</button>`:`<button class="add-btn" onclick="addToCart(${p.id})">${tt('add')}</button>`}</div></div></div>`;
+    return`<div class="product-card" id="card-${p.id}"><div class="product-gallery" id="gallery-${p.id}" onclick="if(!event.target.closest('.gallery-arrow,.gallery-dot'))openProductPage(${p.id})"><div class="gallery-slides" id="slides-${p.id}">${imgs.map((src,i)=>`<div class="gallery-slide ${i===0?'active':''}"><img src="${src}" alt="${p.name}" loading="lazy"></div>`).join('')}</div><button class="gallery-arrow prev" onclick="galleryGo(${p.id},galleryCurrent[${p.id}]-1)">‹</button><button class="gallery-arrow next" onclick="galleryGo(${p.id},galleryCurrent[${p.id}]+1)">›</button><div class="gallery-nav" id="gdots-${p.id}">${dots}</div>${out?`<span class="product-badge out">${tt('outOfStock')}</span>`:(p.badge?`<span class="product-badge">${p.badge}</span>`:'')}</div><div class="product-info"><div class="product-category">${p.category}</div><div class="product-name" style="cursor:pointer" onclick="openProductPage(${p.id})">${p.name}</div><div class="product-desc">${p.desc}</div><button class="detail-link" onclick="openProductPage(${p.id})">${tt('details')}</button><div class="color-selector"><span class="color-label">${tt('color')}</span><div class="color-options">${p.colors.map(c=>`<div class="color-swatch ${c.key} ${p.selectedColor===c.label?'active':''}" title="${c.label}" role="button" aria-label="Couleur ${c.label}" onclick="selectColor(${p.id},'${c.label}',this)"></div>`).join('')}</div><span class="selected-color" id="color-label-${p.id}">${p.selectedColor}</span></div><div class="product-footer"><div class="product-price">${fmtMoney(curUnit(p))}<span class="delivery">${delLabel(p)}</span></div>${out?`<button class="add-btn" disabled style="opacity:.45;cursor:not-allowed">${tt('outOfStock')}</button>`:`<button class="add-btn" onclick="addToCart(${p.id})">${tt('add')}</button>`}</div></div></div>`;
   }).join('');
   products.forEach(p=>{galleryCurrent[p.id]=0;});
 }
@@ -1114,13 +1114,13 @@ function galleryGo(pid,idx){const p=products.find(x=>x.id===pid);const imgs=p.im
 
 function selectColor(pid,color,el){const p=products.find(x=>x.id===pid);p.selectedColor=color;document.querySelectorAll(`#card-${pid} .color-swatch`).forEach(s=>s.classList.remove('active'));el.classList.add('active');document.getElementById('color-label-'+pid).textContent=color;galleryCurrent[pid]=0;const imgs=p.imgs[color];const sEl=document.getElementById('slides-'+pid);sEl.innerHTML=imgs.map((src,i)=>`<div class="gallery-slide ${i===0?'active':''}"><img src="${src}" alt="" loading="lazy"></div>`).join('');document.getElementById('gdots-'+pid).innerHTML=imgs.map((_,i)=>`<div class="gallery-dot ${i===0?'active':''}" onclick="galleryGo(${pid},${i})"></div>`).join('');}
 
-function addToCart(pid){const p=products.find(x=>x.id===pid);if(isOut(pid)){showToast('🔴',tt('outOfStock'));return;}const key=pid+'_'+p.selectedColor;const ex=cart.find(i=>i.key===key);if(ex)ex.qty++;else cart.push({key,id:pid,name:p.name,color:p.selectedColor,price:p.price,img:p.imgs[p.selectedColor][0],qty:1,delivery:p.delivery});updateCartUI();showToast('✨',`${p.name} (${p.selectedColor}) ${tt('added')}`);}
+function addToCart(pid){const p=products.find(x=>x.id===pid);if(isOut(pid)){showToast('🔴',tt('outOfStock'));return;}const key=pid+'_'+p.selectedColor;const ex=cart.find(i=>i.key===key);if(ex)ex.qty++;else cart.push({key,id:pid,name:p.name,color:p.selectedColor,price:p.price,priceEUR:p.priceEUR,img:p.imgs[p.selectedColor][0],qty:1,delivery:p.delivery});updateCartUI();showToast('✨',`${p.name} (${p.selectedColor}) ${tt('added')}`);}
 function removeFromCart(key){cart=cart.filter(i=>i.key!==key);updateCartUI();renderCartModal();}
 function changeQty(key,delta){const it=cart.find(i=>i.key===key);if(!it)return;it.qty+=delta;if(it.qty<=0)cart=cart.filter(i=>i.key!==key);updateCartUI();renderCartModal();}
 function updateCartUI(){const c=cart.reduce((s,i)=>s+i.qty,0);const el=document.getElementById('cartCount');el.textContent=c;el.style.display=c>0?'flex':'none';try{localStorage.setItem('dandu_cart',JSON.stringify(cart));}catch(e){}}
 
 function openCart(){renderCartModal();document.getElementById('cartModal').classList.add('active');}
-function renderCartModal(){const el=document.getElementById('cartItems');const eEl=document.getElementById('cartEmpty');const fEl=document.getElementById('cartFooter');if(!cart.length){el.innerHTML='';eEl.style.display='block';fEl.style.display='none';return;}eEl.style.display='none';fEl.style.display='block';el.innerHTML=cart.map(i=>`<div class="cart-item"><img class="cart-item-img" src="${i.img}" alt=""><div class="cart-item-info"><div class="cart-item-name">${i.name}</div><div class="cart-item-variant">${tt('cartColor')} ${i.color}</div><div class="qty-stepper"><button onclick="changeQty('${i.key}',-1)" aria-label="Diminuer la quantité">−</button><span>${i.qty}</span><button onclick="changeQty('${i.key}',1)" aria-label="Augmenter la quantité">+</button></div><div class="cart-item-price">${formatPrice(i.price*i.qty)}</div></div><button class="cart-item-remove" onclick="removeFromCart('${i.key}')">✕</button></div>`).join('');document.getElementById('cartTotal').textContent=formatPrice(cart.reduce((s,i)=>s+i.price*i.qty,0));}
+function renderCartModal(){const el=document.getElementById('cartItems');const eEl=document.getElementById('cartEmpty');const fEl=document.getElementById('cartFooter');if(!cart.length){el.innerHTML='';eEl.style.display='block';fEl.style.display='none';return;}eEl.style.display='none';fEl.style.display='block';el.innerHTML=cart.map(i=>`<div class="cart-item"><img class="cart-item-img" src="${i.img}" alt=""><div class="cart-item-info"><div class="cart-item-name">${i.name}</div><div class="cart-item-variant">${tt('cartColor')} ${i.color}</div><div class="qty-stepper"><button onclick="changeQty('${i.key}',-1)" aria-label="Diminuer la quantité">−</button><span>${i.qty}</span><button onclick="changeQty('${i.key}',1)" aria-label="Augmenter la quantité">+</button></div><div class="cart-item-price">${fmtMoney(curUnit(i)*i.qty)}</div></div><button class="cart-item-remove" onclick="removeFromCart('${i.key}')">✕</button></div>`).join('');document.getElementById('cartTotal').textContent=fmtMoney(cart.reduce((s,i)=>s+curUnit(i)*i.qty,0));}
 
 
 let currentPageProduct=null;
@@ -1129,7 +1129,7 @@ function openProductPage(pid){
   const fc=p.colors[0].label;p.pageColor=fc;
   document.getElementById('ppName').textContent=p.name;
   document.getElementById('ppCat').textContent=p.category;
-  document.getElementById('ppPrice').textContent=formatPrice(p.price);
+  document.getElementById('ppPrice').textContent=fmtMoney(curUnit(p));
   document.getElementById('ppDel').textContent=delLabel(p);
   document.getElementById('ppDesc').textContent=p.desc;
   document.getElementById('ppFeatures').innerHTML=p.features.map(f=>`<li>${f}</li>`).join('');
@@ -1142,7 +1142,7 @@ function openProductPage(pid){
   // autres produits
   document.getElementById('ppOthers').innerHTML=products.filter(x=>x.id!==pid).map(x=>{
     const im=x.imgs[x.colors[0].label][0];
-    return `<div class="pp-other-card" onclick="openProductPage(${x.id})"><img src="${im}" alt="${x.name}"><div class="n">${x.name}</div><div class="p">${formatPrice(x.price)}</div></div>`;
+    return `<div class="pp-other-card" onclick="openProductPage(${x.id})"><img src="${im}" alt="${x.name}"><div class="n">${x.name}</div><div class="p">${fmtMoney(curUnit(x))}</div></div>`;
   }).join('');
   document.getElementById('page-product').classList.add('active');
   document.body.style.overflow='hidden';
@@ -1155,12 +1155,12 @@ function ppRenderImgs(imgs){
 }
 function ppSetMain(src,el){document.getElementById('ppMainImg').src=src;document.querySelectorAll('#ppThumbs .pp-thumb').forEach(t=>t.classList.remove('active'));el.classList.add('active');}
 function selectPageColor(c,el){const p=currentPageProduct;if(!p)return;p.pageColor=c;document.querySelectorAll('#ppColors .color-swatch').forEach(s=>s.classList.remove('active'));el.classList.add('active');document.getElementById('ppColorLabel').textContent=c;if(p.imgs[c])ppRenderImgs(p.imgs[c]);}
-function addToCartFromPage(){const p=currentPageProduct||products[0];if(isOut(p.id)){showToast('🔴',tt('outOfStock'));return;}const col=p.pageColor||p.colors[0].label;const key=p.id+'_'+col;const ex=cart.find(i=>i.key===key);if(ex)ex.qty++;else cart.push({key,id:p.id,name:p.name,color:col,price:p.price,img:p.imgs[col][0],qty:1,delivery:p.delivery});updateCartUI();showToast('✨',`${p.name} (${col}) ${tt('added')}`);}
+function addToCartFromPage(){const p=currentPageProduct||products[0];if(isOut(p.id)){showToast('🔴',tt('outOfStock'));return;}const col=p.pageColor||p.colors[0].label;const key=p.id+'_'+col;const ex=cart.find(i=>i.key===key);if(ex)ex.qty++;else cart.push({key,id:p.id,name:p.name,color:col,price:p.price,priceEUR:p.priceEUR,img:p.imgs[col][0],qty:1,delivery:p.delivery});updateCartUI();showToast('✨',`${p.name} (${col}) ${tt('added')}`);}
 
-let currentDetailProduct=null;function openProductDetail(pid){const p=products.find(x=>x.id===pid)||products[0];currentDetailProduct=p;const fc=p.colors[0].label;detailSelectedColor=fc;const imgs=p.imgs[fc];document.getElementById('detailModalTitle').textContent=p.name+' — DANDU';document.getElementById('detailName').textContent=p.name;document.getElementById('detailPrice').textContent=formatPrice(p.price);document.getElementById('detailDel').textContent=(p.delivery==='Livraison incluse')?'Frais de livraison inclus':'+ Frais de livraison selon zone';document.getElementById('detailFeatures').innerHTML=p.features.map(f=>`<li>${f}</li>`).join('');document.getElementById('detailMainImg').src=imgs[0];document.getElementById('detailThumbs').innerHTML=imgs.map((src,i)=>`<img class="detail-thumb ${i===0?'active':''}" src="${src}" onclick="setDetailMain('${src}',this)" alt="">`).join('');document.getElementById('detailColorOptions').innerHTML=p.colors.map((c,i)=>`<div class="color-swatch ${c.key} ${i===0?'active':''}" onclick="selectDetailColor('${c.label}',this)"></div>`).join('');document.getElementById('detailSelectedColor').textContent=fc;document.getElementById('detailModal').classList.add('active');}
+let currentDetailProduct=null;function openProductDetail(pid){const p=products.find(x=>x.id===pid)||products[0];currentDetailProduct=p;const fc=p.colors[0].label;detailSelectedColor=fc;const imgs=p.imgs[fc];document.getElementById('detailModalTitle').textContent=p.name+' — DANDU';document.getElementById('detailName').textContent=p.name;document.getElementById('detailPrice').textContent=fmtMoney(curUnit(p));document.getElementById('detailDel').textContent=(p.delivery==='Livraison incluse')?'Frais de livraison inclus':'+ Frais de livraison selon zone';document.getElementById('detailFeatures').innerHTML=p.features.map(f=>`<li>${f}</li>`).join('');document.getElementById('detailMainImg').src=imgs[0];document.getElementById('detailThumbs').innerHTML=imgs.map((src,i)=>`<img class="detail-thumb ${i===0?'active':''}" src="${src}" onclick="setDetailMain('${src}',this)" alt="">`).join('');document.getElementById('detailColorOptions').innerHTML=p.colors.map((c,i)=>`<div class="color-swatch ${c.key} ${i===0?'active':''}" onclick="selectDetailColor('${c.label}',this)"></div>`).join('');document.getElementById('detailSelectedColor').textContent=fc;document.getElementById('detailModal').classList.add('active');}
 function setDetailMain(src,el){document.getElementById('detailMainImg').src=src;document.querySelectorAll('.detail-thumb').forEach(t=>t.classList.remove('active'));el.classList.add('active');}
 function selectDetailColor(c,el){detailSelectedColor=c;document.querySelectorAll('#detailColorOptions .color-swatch').forEach(s=>s.classList.remove('active'));el.classList.add('active');document.getElementById('detailSelectedColor').textContent=c;const p=currentDetailProduct;if(p&&p.imgs[c]){const imgs=p.imgs[c];document.getElementById('detailMainImg').src=imgs[0];document.getElementById('detailThumbs').innerHTML=imgs.map((src,i)=>`<img class="detail-thumb ${i===0?'active':''}" src="${src}" onclick="setDetailMain('${src}',this)" alt="">`).join('');}}
-function addToCartFromDetail(){const p=currentDetailProduct||products[0];const key=p.id+'_'+detailSelectedColor;const ex=cart.find(i=>i.key===key);if(ex)ex.qty++;else cart.push({key,id:p.id,name:p.name,color:detailSelectedColor,price:p.price,img:p.imgs[detailSelectedColor][0],qty:1,delivery:p.delivery});updateCartUI();showToast('✨',`${p.name} (${detailSelectedColor}) ${tt('added')}`);closeModal('detail');}
+function addToCartFromDetail(){const p=currentDetailProduct||products[0];const key=p.id+'_'+detailSelectedColor;const ex=cart.find(i=>i.key===key);if(ex)ex.qty++;else cart.push({key,id:p.id,name:p.name,color:detailSelectedColor,price:p.price,priceEUR:p.priceEUR,img:p.imgs[detailSelectedColor][0],qty:1,delivery:p.delivery});updateCartUI();showToast('✨',`${p.name} (${detailSelectedColor}) ${tt('added')}`);closeModal('detail');}
 
 function openPage(page){closeHam();document.getElementById('page-'+page).classList.add('active');document.body.style.overflow='hidden';}
 function closePage(page){document.getElementById('page-'+page).classList.remove('active');document.body.style.overflow='';}
@@ -1169,7 +1169,7 @@ function closeHam(){const btn=document.getElementById('hamBtn');if(btn)btn.class
 document.addEventListener('click',function(e){var nav=document.getElementById('mobNav');var btn=document.getElementById('hamBtn');if(nav&&nav.classList.contains('active')&&!nav.contains(e.target)&&btn&&!btn.contains(e.target))closeHam();});
 
 
-function openCheckout(method){closeModal('cart');if(!cart.length){showToast('⚠️',LANG==='en'?'Your cart is empty':'Votre panier est vide');return;}document.getElementById('checkoutTitle').textContent=tt('orderTitle');document.getElementById('orderItems').innerHTML=cart.map(i=>`<div class="order-item"><span>${i.name} (${i.color}) ×${i.qty}</span><span>${formatPrice(i.price*i.qty)}</span></div>`).join('');document.getElementById('orderTotal').textContent=formatPrice(cart.reduce((s,i)=>s+i.price*i.qty,0));const _m={orange:'Orange Money',visa:'Paiement à la livraison',store:'Retrait en boutique (Dovv Simbock, Yaoundé)'};const _sel=document.getElementById('ck-method');if(_sel&&_m[method])_sel.value=_m[method];document.getElementById('checkoutForm').style.display='block';document.getElementById('checkoutSuccess').classList.remove('show');document.getElementById('checkoutModal').classList.add('active');}
+function openCheckout(method){closeModal('cart');if(!cart.length){showToast('⚠️',LANG==='en'?'Your cart is empty':'Votre panier est vide');return;}document.getElementById('checkoutTitle').textContent=tt('orderTitle');document.getElementById('orderItems').innerHTML=cart.map(i=>`<div class="order-item"><span>${i.name} (${i.color}) ×${i.qty}</span><span>${fmtMoney(curUnit(i)*i.qty)}</span></div>`).join('');document.getElementById('orderTotal').textContent=fmtMoney(cart.reduce((s,i)=>s+curUnit(i)*i.qty,0));const _m={orange:'Orange Money',visa:'Paiement à la livraison',store:'Retrait en boutique (Dovv Simbock, Yaoundé)'};const _sel=document.getElementById('ck-method');if(_sel&&_m[method])_sel.value=_m[method];document.getElementById('checkoutForm').style.display='block';document.getElementById('checkoutSuccess').classList.remove('show');document.getElementById('checkoutModal').classList.add('active');}
 function switchTab(m){['orange','visa','store'].forEach(t=>{document.getElementById('tab-'+t).classList.remove('active');document.getElementById('panel-'+t).classList.remove('active');});document.getElementById('tab-'+m).classList.add('active');document.getElementById('panel-'+m).classList.add('active');}
 const WHATSAPP_NUMBER='237621213280';
 function sendOrderWhatsApp(){
@@ -1188,10 +1188,11 @@ function sendOrderWhatsApp(){
   lines.push('Bonjour DANDU \uD83D\uDC4B');
   lines.push('Je souhaite passer commande :');
   lines.push('');
-  cart.forEach(i=>lines.push('\u2022 '+i.name+' ('+i.color+') x'+i.qty+' \u2014 '+formatPrice(i.price*i.qty)));
+  cart.forEach(i=>lines.push('\u2022 '+i.name+' ('+i.color+') x'+i.qty+' \u2014 '+fmtMoney(curUnit(i)*i.qty)));
   const total=cart.reduce((s,i)=>s+i.price*i.qty,0);
   lines.push('');
-  lines.push('Total : '+formatPrice(total)+(CURRENCY==='EUR'?(' (soit '+total.toLocaleString('fr-FR')+' FCFA)'):''));
+  lines.push('Total : '+fmtMoney(cart.reduce(function(s,i){return s+curUnit(i)*i.qty;},0)));
+  if(CURRENCY==='EUR')lines.push('Ref. FCFA : '+total.toLocaleString('fr-FR')+' FCFA');
   lines.push('');
   lines.push('Mode de paiement souhaite : '+method);
   lines.push('Nom : '+name);
@@ -1286,6 +1287,9 @@ const I18N={en:{
 /* ===== Devise FCFA / EUR (taux fixe officiel) ===== */
 var EUR_RATE=655.957; /* 1 EUR = 655,957 FCFA (parite fixe) */
 var CURRENCY=(function(){try{var s=localStorage.getItem('dandu_currency');return (s==='EUR'||s==='XAF')?s:'XAF';}catch(e){return 'XAF';}})();
+function parseMoneyFR(v){if(v==null)return NaN;var s=String(v).replace(/[^\d.,]/g,'');if(!s)return NaN;if(s.indexOf(',')>-1&&s.indexOf('.')>-1){s=s.replace(/\./g,'').replace(',','.');}else if(s.indexOf(',')>-1){s=s.replace(',','.');}return parseFloat(s);}
+function curUnit(o){if(CURRENCY==='EUR'){var e=Number(o&&o.priceEUR);if(e>0)return e;return (Number((o&&o.price))||0)/EUR_RATE;}return Number((o&&o.price))||0;}
+function fmtMoney(amount){amount=Number(amount)||0;if(CURRENCY==='EUR')return amount.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';return Math.round(amount).toLocaleString('fr-FR')+' FCFA';}
 function formatPrice(fcfa){
   fcfa=Math.round(Number(fcfa)||0);
   if(CURRENCY==='EUR'){return (fcfa/EUR_RATE).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';}
@@ -1336,13 +1340,18 @@ updateCartUI();
 (function(){var f=document.getElementById('waFab');if(f)f.href='https://wa.me/'+WHATSAPP_NUMBER+'?text='+encodeURIComponent('Bonjour DANDU 👋, je vous écris depuis votre site internet.');})();
 setLang(LANG);
 
-/* Devise : choix sauvegarde sinon auto-detection du pays (FCFA en zone CFA, EUR ailleurs) */
+/* Devise : choix memorise > zone FCFA (fuseau/langue de l'appareil) > geolocalisation IP. FCFA par defaut. */
 (function(){
   var saved=null;try{saved=localStorage.getItem('dandu_currency');}catch(e){}
   if(saved==='EUR'||saved==='XAF'){applyCurrency(saved);return;}
-  applyCurrency('XAF');
-  var CFA=['CM','CF','TD','CG','GA','GQ','BJ','BF','CI','GW','ML','NE','SN','TG'];
-  function decide(cc){if(cc&&CFA.indexOf(String(cc).toUpperCase())<0)applyCurrency('EUR');}
+  applyCurrency('XAF'); /* defaut : FCFA */
+  var REG=['CM','CF','TD','CG','GA','GQ','BJ','BF','CI','GW','ML','NE','SN','TG'];
+  var TZ=['Africa/Douala','Africa/Lagos','Africa/Bangui','Africa/Ndjamena','Africa/Brazzaville','Africa/Libreville','Africa/Malabo','Africa/Porto-Novo','Africa/Ouagadougou','Africa/Abidjan','Africa/Bissau','Africa/Bamako','Africa/Niamey','Africa/Dakar','Africa/Lome'];
+  var tz='',reg='';
+  try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'';}catch(e){}
+  try{reg=((navigator.language||'').split('-')[1]||'').toUpperCase();}catch(e){}
+  if(TZ.indexOf(tz)>=0||REG.indexOf(reg)>=0)return; /* appareil en zone FCFA -> on garde le FCFA (pas d'appel reseau) */
+  function decide(cc){if(cc&&REG.indexOf(String(cc).toUpperCase())<0)applyCurrency('EUR');}
   fetch('https://ipwho.is/').then(function(r){return r.json();}).then(function(d){
     if(d&&d.country_code){decide(d.country_code);}else{throw 0;}
   }).catch(function(){
