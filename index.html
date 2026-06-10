@@ -1065,20 +1065,27 @@ function submitReview(){
   document.getElementById('reviewSuccess').classList.add('show');
   document.getElementById('rev-name').value='';document.getElementById('rev-text').value='';
 }
-/* ===== Photos Yao Boy depuis les dossiers (assets/yao-boy/<couleur>/ + manifest.json) ===== */
-function loadYaoPhotos(){
-  fetch('assets/yao-boy/manifest.json?v='+Date.now()).then(function(r){return r.json();}).then(function(m){
-    var yao=products.find(function(p){return p.id===2;});if(!yao)return;
-    var commun=(m.commun||[]).map(function(f){return 'assets/yao-boy/commun/'+f;});
-    var map={'Noir':'noir','Marron':'marron','Vert':'vert'};
-    Object.keys(map).forEach(function(label){
-      var k=map[label];
-      var arr=((m[k]||[]).map(function(f){return 'assets/yao-boy/'+k+'/'+f;})).concat(commun);
-      if(arr.length) yao.imgs[label]=arr;
-    });
-    if(typeof renderProducts==='function')renderProducts();
-    if(typeof currentPageProduct!=='undefined'&&currentPageProduct&&currentPageProduct.id===2&&document.getElementById('page-product')&&document.getElementById('page-product').classList.contains('active'))openProductPage(2);
-  }).catch(function(){});
+/* ===== Photos produits depuis les dossiers (assets/<produit>/<couleur>/ + manifest.json) ===== */
+const PHOTO_PRODUCTS=[
+  {id:1,folder:'zona',colors:{'Marron':'marron','Noir':'noir'}},
+  {id:2,folder:'yao-boy',colors:{'Noir':'noir','Marron':'marron','Vert':'vert'}},
+  {id:3,folder:'kleope',colors:{'Safran':'safran'}},
+  {id:4,folder:'kana',colors:{'Naturel':'naturel'}}
+];
+function loadProductPhotos(){
+  PHOTO_PRODUCTS.forEach(function(cfg){
+    fetch('assets/'+cfg.folder+'/manifest.json?v='+Date.now()).then(function(r){return r.json();}).then(function(m){
+      var prod=products.find(function(p){return p.id===cfg.id;});if(!prod)return;
+      var commun=(m.commun||[]).map(function(f){return 'assets/'+cfg.folder+'/commun/'+f;});
+      var changed=false;
+      Object.keys(cfg.colors).forEach(function(label){
+        var k=cfg.colors[label];
+        var arr=((m[k]||[]).map(function(f){return 'assets/'+cfg.folder+'/'+k+'/'+f;})).concat(commun);
+        if(arr.length){prod.imgs[label]=arr;changed=true;}
+      });
+      if(changed){if(typeof renderProducts==='function')renderProducts();if(typeof currentPageProduct!=='undefined'&&currentPageProduct&&currentPageProduct.id===cfg.id&&document.getElementById('page-product')&&document.getElementById('page-product').classList.contains('active'))openProductPage(cfg.id);}
+    }).catch(function(){});
+  });
 }
 function renderProducts(){
   document.getElementById('productsGrid').innerHTML=products.map(p=>{
@@ -1292,7 +1299,7 @@ function setLang(lang){
 renderProducts();
 loadStock();
 loadReviews();
-loadYaoPhotos();
+loadProductPhotos();
 (function(){var c=document.querySelector('.reviews-cta');if(c&&!REVIEWS_POST)c.style.display='none';})();
 goSlide(0);
 renderCatalogue();
