@@ -1,6 +1,8 @@
-# Ne versionner que le site : index.html + assets/ (+ README, .gitignore)
+# Ne versionner que le site : index.html + design1/2.html + assets/ (+ README, .gitignore)
 /*
 !/index.html
+!/design1.html
+!/design2.html
 !/assets/
 !/README.md
 !/.gitignore

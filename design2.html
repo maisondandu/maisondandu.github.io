@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DANDU — Maison de Maroquinerie · Yaoundé</title>
+<meta name="description" content="DANDU — Maison de maroquinerie d'art fondée à Yaoundé en 2017. Pièces façonnées à la main, héritage africain, élégance intemporelle.">
+<meta name="author" content="DANDU — Daniel & Urweiller">
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3E4CH1XWLC"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-3E4CH1XWLC');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --noir:#161210; --noir-2:#211a15; --ivoire:#f4efe5; --ivoire-2:#eae1d2; --blanc:#fbf9f4;
+  --or:#b3905b; --or-clair:#d2b483; --taupe:#8c7d6b; --terre:#9a4f33; --ligne:#e0d6c5;
+  --txt:#2a221c; --txt-doux:#6f6356;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Jost',sans-serif;color:var(--txt);background:var(--blanc);line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+h1,h2,h3,h4,.serif{font-family:'Cormorant Garamond',serif;font-weight:400;line-height:1.08;}
+img{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+.kicker{font-family:'Jost',sans-serif;font-weight:400;font-size:0.66rem;letter-spacing:0.42em;text-transform:uppercase;color:var(--or);}
+.btn{display:inline-block;font-family:'Jost',sans-serif;font-size:0.7rem;letter-spacing:0.28em;text-transform:uppercase;padding:1.05rem 2.6rem;border:1px solid var(--noir);background:var(--noir);color:var(--ivoire);cursor:pointer;transition:all .45s cubic-bezier(.2,.7,.2,1);}
+.btn:hover{background:transparent;color:var(--noir);}
+.btn.light{border-color:var(--ivoire);background:transparent;color:var(--ivoire);}
+.btn.light:hover{background:var(--ivoire);color:var(--noir);}
+.btn.gold{border-color:var(--or);background:var(--or);color:#fff;}
+.btn.gold:hover{background:transparent;color:var(--or);}
+.link-u{font-size:0.7rem;letter-spacing:0.26em;text-transform:uppercase;border-bottom:1px solid var(--or);padding-bottom:4px;color:var(--noir);transition:.3s;display:inline-block;}
+.link-u:hover{letter-spacing:0.34em;}
+
+/* ===== Annonce ===== */
+.annonce{background:var(--noir);color:var(--ivoire);text-align:center;font-size:0.64rem;letter-spacing:0.28em;text-transform:uppercase;padding:0.6rem 1rem;font-weight:300;}
+.annonce span{color:var(--or-clair);}
+
+/* ===== Header ===== */
+.hdr{position:fixed;top:0;left:0;right:0;z-index:200;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:1.5rem 3rem;transition:all .5s ease;}
+.hdr.scrolled{background:rgba(251,249,244,0.96);box-shadow:0 1px 0 var(--ligne);padding:1rem 3rem;backdrop-filter:blur(8px);}
+.hdr-nav{display:flex;gap:2.4rem;align-items:center;}
+.hdr-nav a{font-size:0.68rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--ivoire);transition:.3s;position:relative;font-weight:400;}
+.hdr-nav a::after{content:'';position:absolute;left:0;bottom:-6px;width:0;height:1px;background:var(--or);transition:width .35s;}
+.hdr-nav a:hover::after{width:100%;}
+.hdr.scrolled .hdr-nav a,.hdr.scrolled .logo,.hdr.scrolled .hdr-util a,.hdr.scrolled .burger span{color:var(--noir);}
+.hdr.scrolled .burger span{background:var(--noir);}
+.logo{font-family:'Cormorant Garamond',serif;font-size:2rem;letter-spacing:0.34em;color:var(--ivoire);text-align:center;font-weight:500;padding-left:0.34em;transition:.5s;}
+.logo small{display:block;font-family:'Jost',sans-serif;font-size:0.5rem;letter-spacing:0.5em;margin-top:2px;font-weight:300;opacity:.75;}
+.hdr-util{display:flex;gap:1.5rem;align-items:center;justify-content:flex-end;}
+.hdr-util a{font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--ivoire);cursor:pointer;transition:.3s;}
+.cart-link .c-count{display:inline-block;min-width:17px;height:17px;line-height:17px;text-align:center;background:var(--or);color:#fff;border-radius:50%;font-size:0.58rem;margin-left:5px;}
+.burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;}
+.burger span{width:24px;height:1.5px;background:var(--ivoire);transition:.3s;}
+
+/* ===== Hero ===== */
+.hero{height:100vh;min-height:640px;position:relative;display:flex;align-items:center;justify-content:center;text-align:center;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background-size:cover;background-position:center 28%;animation:kenburns 18s ease-out infinite alternate;}
+@keyframes kenburns{from{transform:scale(1.05)}to{transform:scale(1.16)}}
+.hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(18,14,11,.45),rgba(18,14,11,.25) 40%,rgba(18,14,11,.65));}
+.hero-in{position:relative;z-index:2;color:var(--ivoire);padding:1.5rem;max-width:920px;}
+.hero-in .kicker{color:var(--or-clair);margin-bottom:1.6rem;opacity:0;animation:rise 1.1s .2s forwards;}
+.hero-in h1{font-size:clamp(2.9rem,7vw,6rem);font-weight:300;letter-spacing:.01em;margin-bottom:1.8rem;opacity:0;animation:rise 1.1s .45s forwards;}
+.hero-in h1 em{font-style:italic;color:var(--or-clair);}
+.hero-in p{font-size:1rem;font-weight:300;letter-spacing:.04em;max-width:520px;margin:0 auto 2.6rem;opacity:0;animation:rise 1.1s .7s forwards;}
+.hero-in .btn{opacity:0;animation:rise 1.1s .95s forwards;}
+@keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.scroll-cue{position:absolute;bottom:2.2rem;left:50%;transform:translateX(-50%);z-index:3;color:var(--ivoire);font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;opacity:.8;}
+.scroll-cue::after{content:'';display:block;width:1px;height:38px;background:var(--or-clair);margin:10px auto 0;animation:cue 2s infinite;}
+@keyframes cue{0%,100%{opacity:.3;transform:scaleY(.6)}50%{opacity:1;transform:scaleY(1)}}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(38px);transition:opacity 1.1s cubic-bezier(.2,.7,.2,1),transform 1.1s cubic-bezier(.2,.7,.2,1);}
+.reveal.in{opacity:1;transform:none;}
+
+/* ===== Manifeste ===== */
+.manifeste{padding:9rem 2rem;text-align:center;background:var(--ivoire);}
+.manifeste .kicker{margin-bottom:2rem;}
+.manifeste p.big{font-family:'Cormorant Garamond',serif;font-size:clamp(1.7rem,3.4vw,2.9rem);font-weight:300;line-height:1.32;max-width:980px;margin:0 auto 2rem;color:var(--txt);}
+.manifeste p.big em{font-style:italic;color:var(--or);}
+.manifeste p.sub{max-width:620px;margin:0 auto;color:var(--txt-doux);font-weight:300;font-size:0.96rem;}
+.sep{width:46px;height:1px;background:var(--or);margin:2.6rem auto;}
+
+/* ===== Collections ===== */
+.collections{padding:7rem 0 4rem;}
+.sec-head{text-align:center;margin-bottom:5.5rem;padding:0 2rem;}
+.sec-head .kicker{margin-bottom:1.1rem;}
+.sec-head h2{font-size:clamp(2.4rem,5vw,4rem);font-weight:300;color:var(--txt);}
+.prod-row{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:0;max-width:1320px;margin:0 auto 2.5rem;}
+.prod-row.rev .prod-media{order:2;}
+.prod-media{position:relative;overflow:hidden;cursor:pointer;background:var(--ivoire-2);}
+.prod-media img{width:100%;height:78vh;max-height:760px;object-fit:cover;transition:transform 1.4s cubic-bezier(.2,.7,.2,1);}
+.prod-media:hover img{transform:scale(1.05);}
+.prod-media .num{position:absolute;top:1.6rem;left:1.8rem;font-family:'Cormorant Garamond',serif;font-size:1.1rem;letter-spacing:.2em;color:#fff;mix-blend-mode:difference;}
+.prod-txt{padding:3rem 5rem;}
+.prod-row.rev .prod-txt{order:1;text-align:right;}
+.prod-txt .kicker{margin-bottom:1.1rem;display:block;}
+.prod-txt h3{font-size:clamp(2.4rem,4vw,3.6rem);font-weight:300;margin-bottom:1.3rem;color:var(--txt);}
+.prod-txt p{color:var(--txt-doux);font-weight:300;margin-bottom:1.8rem;max-width:380px;}
+.prod-row.rev .prod-txt p{margin-left:auto;}
+.prod-price{font-family:'Cormorant Garamond',serif;font-size:1.7rem;color:var(--or);margin-bottom:2rem;}
+.prod-price .rupture{font-family:'Jost',sans-serif;font-size:0.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--terre);border:1px solid var(--terre);padding:.25rem .6rem;margin-left:.8rem;vertical-align:middle;}
+
+/* ===== Signature / héritage ===== */
+.heritage{position:relative;background:var(--noir);color:var(--ivoire);padding:0;margin:5rem 0;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;}
+.heritage-img{min-height:90vh;background-size:cover;background-position:center;}
+.heritage-txt{padding:7rem 5.5rem;display:flex;flex-direction:column;justify-content:center;}
+.heritage-txt .kicker{margin-bottom:1.6rem;}
+.heritage-txt h2{font-size:clamp(2.4rem,4vw,3.8rem);font-weight:300;margin-bottom:1.8rem;color:var(--ivoire);}
+.heritage-txt h2 em{font-style:italic;color:var(--or-clair);}
+.heritage-txt p{font-weight:300;color:#cdbfae;margin-bottom:1.4rem;font-size:1.02rem;}
+.heritage-txt .quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.5rem;color:var(--or-clair);border-left:1px solid var(--or);padding-left:1.4rem;margin:1.6rem 0 2.4rem;line-height:1.3;}
+
+/* ===== Savoir-faire ===== */
+.savoir{padding:8rem 2rem;background:var(--ivoire);text-align:center;}
+.savoir-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3.5rem;max-width:1100px;margin:4.5rem auto 0;}
+.sv-card .n{font-family:'Cormorant Garamond',serif;font-size:2.6rem;color:var(--or);opacity:.5;margin-bottom:.6rem;}
+.sv-card h4{font-size:1.7rem;margin-bottom:.8rem;color:var(--txt);}
+.sv-card p{font-weight:300;color:var(--txt-doux);font-size:0.92rem;}
+
+/* ===== Monde ===== */
+.monde{padding:7rem 2rem;background:var(--noir-2);color:var(--ivoire);text-align:center;}
+.monde .kicker{color:var(--or-clair);margin-bottom:1.4rem;}
+.monde h2{font-size:clamp(2rem,4vw,3.2rem);font-weight:300;max-width:840px;margin:0 auto 1.6rem;}
+.monde p{max-width:640px;margin:0 auto 3rem;color:#bdaf9e;font-weight:300;}
+.monde-row{display:flex;justify-content:center;gap:4rem;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.12);padding-top:3rem;max-width:900px;margin:0 auto;}
+.monde-row div .y{font-family:'Cormorant Garamond',serif;font-size:2.4rem;color:var(--or-clair);}
+.monde-row div .l{font-size:0.66rem;letter-spacing:.2em;text-transform:uppercase;color:#9d8f7e;margin-top:.4rem;}
+
+/* ===== Newsletter / contact ===== */
+.invite{padding:8rem 2rem;text-align:center;background:var(--blanc);}
+.invite h2{font-size:clamp(2.2rem,4.5vw,3.6rem);font-weight:300;margin-bottom:1.2rem;}
+.invite p{color:var(--txt-doux);font-weight:300;max-width:520px;margin:0 auto 2.6rem;}
+
+/* ===== Footer ===== */
+footer{background:var(--noir);color:var(--ivoire);padding:5rem 3rem 0;}
+.foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:3rem;max-width:1300px;margin:0 auto;padding-bottom:4rem;border-bottom:1px solid rgba(255,255,255,.1);}
+.foot-logo{font-family:'Cormorant Garamond',serif;font-size:2.2rem;letter-spacing:.3em;margin-bottom:1.2rem;padding-left:.3em;}
+.foot-col p,.foot-col a{display:block;font-weight:300;font-size:0.86rem;color:#b3a594;margin-bottom:.7rem;transition:.3s;}
+.foot-col a:hover{color:var(--or-clair);}
+.foot-col .h{font-size:0.66rem;letter-spacing:.26em;text-transform:uppercase;color:var(--or);margin-bottom:1.4rem;}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;max-width:1300px;margin:0 auto;padding:1.8rem 0;font-size:0.66rem;letter-spacing:.12em;color:#8a7c6b;}
+.cur-switch{display:inline-flex;border:1px solid rgba(255,255,255,.2);}
+.cur-btn{background:none;border:none;color:#b3a594;font-family:'Jost',sans-serif;font-size:0.64rem;letter-spacing:.14em;padding:.5rem .9rem;cursor:pointer;transition:.3s;}
+.cur-btn.active{background:var(--or);color:#fff;}
+
+/* ===== Modal produit ===== */
+.overlay{position:fixed;inset:0;background:rgba(20,15,11,.6);z-index:500;opacity:0;visibility:hidden;transition:.4s;backdrop-filter:blur(3px);}
+.overlay.open{opacity:1;visibility:visible;}
+.pmodal{position:fixed;top:0;right:0;height:100%;width:min(1080px,100%);background:var(--blanc);z-index:600;transform:translateX(100%);transition:transform .55s cubic-bezier(.4,0,.1,1);display:grid;grid-template-columns:1.15fr 1fr;overflow:hidden;}
+.pmodal.open{transform:none;}
+.pm-gallery{position:relative;background:var(--ivoire-2);overflow:hidden;}
+.pm-main{height:100%;}
+.pm-main img{width:100%;height:100%;object-fit:cover;}
+.pm-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(20,15,11,.45);color:#fff;border:none;width:44px;height:44px;cursor:pointer;font-size:1.1rem;z-index:3;transition:.3s;}
+.pm-arrow:hover{background:var(--noir);}
+.pm-arrow.prev{left:1rem;}.pm-arrow.next{right:1rem;}
+.pm-dots{position:absolute;bottom:1.2rem;left:50%;transform:translateX(-50%);display:flex;gap:7px;z-index:3;}
+.pm-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.5);cursor:pointer;transition:.3s;}
+.pm-dot.active{background:#fff;width:22px;border-radius:4px;}
+.pm-info{padding:4rem 3.5rem;display:flex;flex-direction:column;overflow-y:auto;}
+.pm-close{position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;font-size:1.6rem;cursor:pointer;color:var(--txt);z-index:5;line-height:1;}
+.pm-info .kicker{margin-bottom:1rem;}
+.pm-info h2{font-size:3rem;font-weight:300;margin-bottom:.5rem;}
+.pm-price{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--or);margin-bottom:1.8rem;}
+.pm-desc{font-weight:300;color:var(--txt-doux);margin-bottom:2rem;}
+.pm-feats{list-style:none;margin-bottom:2.2rem;}
+.pm-feats li{font-weight:300;font-size:0.9rem;color:var(--txt);padding:.5rem 0;border-bottom:1px solid var(--ligne);}
+.pm-feats li::before{content:'—';color:var(--or);margin-right:.7rem;}
+.pm-colors{display:flex;gap:.8rem;margin-bottom:.6rem;}
+.pm-label{font-size:0.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--txt-doux);margin-bottom:.8rem;}
+.swatch{width:30px;height:30px;border-radius:50%;cursor:pointer;border:1px solid var(--ligne);position:relative;transition:.3s;}
+.swatch.active{box-shadow:0 0 0 2px var(--blanc),0 0 0 3px var(--or);}
+.sw-marron{background:#7c4a2d;}.sw-noir{background:#1d1a17;}.sw-vert{background:#2f6f63;}.sw-safran{background:#c98a3c;}.sw-naturel{background:#7a2330;}
+.pm-actions{margin-top:auto;padding-top:2rem;}
+
+/* ===== Panier ===== */
+.cart{position:fixed;top:0;right:0;height:100%;width:min(440px,100%);background:var(--blanc);z-index:600;transform:translateX(100%);transition:transform .5s cubic-bezier(.4,0,.1,1);display:flex;flex-direction:column;}
+.cart.open{transform:none;}
+.cart-head{padding:2rem;border-bottom:1px solid var(--ligne);display:flex;justify-content:space-between;align-items:center;}
+.cart-head h3{font-size:1.8rem;font-weight:400;}
+.cart-head button{background:none;border:none;font-size:1.5rem;cursor:pointer;line-height:1;}
+.cart-body{flex:1;overflow-y:auto;padding:1.5rem 2rem;}
+.cart-item{display:grid;grid-template-columns:64px 1fr auto;gap:1rem;padding:1.2rem 0;border-bottom:1px solid var(--ligne);align-items:center;}
+.cart-item img{width:64px;height:78px;object-fit:cover;}
+.cart-item .ci-n{font-family:'Cormorant Garamond',serif;font-size:1.2rem;}
+.cart-item .ci-c{font-size:0.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--txt-doux);margin:.2rem 0;}
+.cart-item .ci-p{color:var(--or);font-size:0.92rem;}
+.qty{display:inline-flex;align-items:center;gap:.7rem;margin-top:.4rem;}
+.qty button{width:22px;height:22px;border:1px solid var(--ligne);background:none;cursor:pointer;font-size:.8rem;}
+.ci-rm{background:none;border:none;color:var(--txt-doux);cursor:pointer;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;}
+.cart-empty{text-align:center;color:var(--txt-doux);font-weight:300;padding:4rem 1rem;}
+.cart-foot{padding:2rem;border-top:1px solid var(--ligne);}
+.cart-total{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1.4rem;}
+.cart-total .t-l{font-size:0.7rem;letter-spacing:.2em;text-transform:uppercase;}
+.cart-total .t-v{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--or);}
+.cart-note{font-size:0.66rem;color:var(--txt-doux);text-align:center;margin-top:1rem;font-weight:300;}
+.btn.full{width:100%;text-align:center;border:none;}
+
+/* ===== Menu mobile ===== */
+.mob{position:fixed;inset:0;background:var(--noir);z-index:550;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:1.6rem;transform:translateY(-100%);transition:transform .5s ease;}
+.mob.open{transform:none;}
+.mob a{color:var(--ivoire);font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;}
+.mob .mclose{position:absolute;top:1.6rem;right:2rem;background:none;border:none;color:var(--ivoire);font-size:2rem;cursor:pointer;}
+
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(120%);background:var(--noir);color:var(--ivoire);padding:1rem 2rem;font-size:0.74rem;letter-spacing:.14em;text-transform:uppercase;z-index:700;transition:transform .4s;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+.wa-fab{position:fixed;bottom:1.6rem;right:1.6rem;width:54px;height:54px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.2);transition:.3s;}
+.wa-fab:hover{transform:scale(1.08);}
+.wa-fab svg{width:28px;height:28px;fill:#fff;}
+
+/* ===== Responsive ===== */
+@media(max-width:900px){
+  .hdr{grid-template-columns:auto 1fr auto;padding:1.1rem 1.4rem;}
+  .hdr-nav{display:none;}
+  .burger{display:flex;}
+  .logo{font-size:1.5rem;}.logo small{display:none;}
+  .hdr-util .u-txt{display:none;}
+  .prod-row,.prod-row.rev{grid-template-columns:1fr;}
+  .prod-media,.prod-row.rev .prod-media{order:1;}
+  .prod-txt,.prod-row.rev .prod-txt{order:2;text-align:center;padding:3rem 1.8rem 4rem;}
+  .prod-row.rev .prod-txt p,.prod-txt p{margin-left:auto;margin-right:auto;}
+  .prod-media img{height:62vh;}
+  .heritage{grid-template-columns:1fr;}
+  .heritage-img{min-height:60vh;}
+  .heritage-txt{padding:4.5rem 2rem;}
+  .savoir-grid{grid-template-columns:1fr;gap:2.5rem;}
+  .monde-row{gap:2.2rem;}
+  .pmodal{grid-template-columns:1fr;}
+  .pm-gallery{height:45vh;}
+  .pm-info{padding:2.5rem 1.8rem;}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:2rem;}
+  .manifeste,.savoir,.monde,.invite{padding:5.5rem 1.5rem;}
+}
+@media(max-width:520px){.foot-grid{grid-template-columns:1fr;}.foot-bottom{flex-direction:column;text-align:center;}}
+</style>
+</head>
+<body>
+
+<div class="annonce">Façonné à la main à Yaoundé · <span>Livraison internationale</span></div>
+
+<header class="hdr" id="hdr">
+  <nav class="hdr-nav">
+    <a onclick="scrollTo2('collections')">Les Collections</a>
+    <a onclick="scrollTo2('heritage')">L'Héritage</a>
+    <a onclick="scrollTo2('savoir')">Savoir-Faire</a>
+  </nav>
+  <div class="logo">DANDU<small>MAISON · YAOUNDÉ</small></div>
+  <div class="hdr-util">
+    <a onclick="scrollTo2('invite')" class="u-txt">Contact</a>
+    <a class="cart-link" onclick="openCart()"><span class="u-txt">Panier</span> <span class="c-count" id="cCount" style="display:none">0</span></a>
+    <button class="burger" onclick="toggleMob()" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="mob" id="mob">
+  <button class="mclose" onclick="toggleMob()">×</button>
+  <a onclick="toggleMob();scrollTo2('collections')">Les Collections</a>
+  <a onclick="toggleMob();scrollTo2('heritage')">L'Héritage</a>
+  <a onclick="toggleMob();scrollTo2('savoir')">Savoir-Faire</a>
+  <a onclick="toggleMob();scrollTo2('invite')">Contact</a>
+  <a onclick="toggleMob();openCart()">Panier</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg" style="background-image:url('assets/hero-zona-1.jpg')"></div>
+  <div class="hero-in">
+    <div class="kicker">Maison de Maroquinerie — Yaoundé, Cameroun</div>
+    <h1>L'élégance africaine,<br><em>façonnée à la main.</em></h1>
+    <p>Depuis 2017, DANDU façonne une maroquinerie d'exception, où chaque pièce porte la fierté d'un héritage.</p>
+    <button class="btn light" onclick="scrollTo2('collections')">Découvrir les Collections</button>
+  </div>
+  <div class="scroll-cue">Défiler</div>
+</section>
+
+<!-- MANIFESTE -->
+<section class="manifeste reveal">
+  <div class="kicker">La Maison</div>
+  <p class="big">Née à Yaoundé, DANDU perpétue un geste rare : celui d'une <em>maroquinerie d'art</em> où le cuir, travaillé à la main, devient mémoire et matière noble.</p>
+  <div class="sep"></div>
+  <p class="sub">Maroquinerie, Cordonnerie &amp; Tapisserie. Six artisans réunis par une même exigence : créer des pièces qui traversent le temps.</p>
+</section>
+
+<!-- COLLECTIONS -->
+<section class="collections" id="collections">
+  <div class="sec-head reveal">
+    <div class="kicker">Les Pièces</div>
+    <h2>Les Collections</h2>
+  </div>
+  <div id="prodRows"></div>
+</section>
+
+<!-- HERITAGE (Kana) -->
+<section class="heritage" id="heritage">
+  <div class="heritage-img reveal" style="background-image:url('assets/kana/naturel/1.jpeg')"></div>
+  <div class="heritage-txt reveal">
+    <div class="kicker">La Pièce Héritage</div>
+    <h2>Le sac du <em>successeur</em>.</h2>
+    <p>Dans nos traditions, le sac du successeur incarne le pouvoir transmis : remis à l'héritier le jour de son investiture, il fait de lui le gardien du lignage et l'intercesseur des ancêtres.</p>
+    <div class="quote">« Créer des pièces qui traversent le temps, portées par la fierté de notre héritage. »</div>
+    <p>Le sac <strong style="color:var(--ivoire);font-weight:400">Kana</strong> puise dans cet héritage. Cuir de mouton véritable, tannage végétal, anse sculpturale cousue main.</p>
+    <div style="margin-top:1rem"><a class="link-u" style="color:var(--ivoire);border-color:var(--or)" onclick="openProduct(4)">Découvrir le sac Kana</a></div>
+  </div>
+</section>
+
+<!-- SAVOIR-FAIRE -->
+<section class="savoir reveal" id="savoir">
+  <div class="kicker">Notre Exigence</div>
+  <h2 style="font-size:clamp(2.2rem,4.5vw,3.4rem);font-weight:300;margin-top:1rem">Le Savoir-Faire</h2>
+  <div class="savoir-grid">
+    <div class="sv-card"><div class="n">I</div><h4>Création</h4><p>Un dessin original, inspiré de l'art africain et des lignes contemporaines.</p></div>
+    <div class="sv-card"><div class="n">II</div><h4>Fabrication</h4><p>Chaque pièce est façonnée à la main par nos artisans, à Yaoundé.</p></div>
+    <div class="sv-card"><div class="n">III</div><h4>Transmission</h4><p>De la boutique de Simbock au monde, un héritage qui rayonne.</p></div>
+  </div>
+</section>
+
+<!-- MONDE -->
+<section class="monde reveal">
+  <div class="kicker">La Maison dans le Monde</div>
+  <h2>Un savoir-faire camerounais, reconnu au-delà des frontières.</h2>
+  <p>DANDU a été sélectionnée pour l'Africa–China Successful Startups Exchange Program — une distinction internationale qui consacre l'excellence de notre artisanat.</p>
+  <div class="monde-row">
+    <div><div class="y">2017</div><div class="l">Fondation · Yaoundé</div></div>
+    <div><div class="y">2025</div><div class="l">Route de la Soie · Changsha</div></div>
+    <div><div class="y">∞</div><div class="l">Patrimoine Immatériel</div></div>
+  </div>
+</section>
+
+<!-- INVITE -->
+<section class="invite reveal" id="invite">
+  <div class="kicker">Prendre Contact</div>
+  <h2 style="margin-top:1rem">Entrez dans la Maison</h2>
+  <p>Pour une commande, une pièce sur-mesure ou une visite à la boutique Dovv Simbock, notre équipe vous accueille.</p>
+  <a class="btn gold" href="https://wa.me/237621213280?text=Bonjour%20DANDU%2C%20je%20vous%20%C3%A9cris%20depuis%20votre%20site." target="_blank">Nous écrire sur WhatsApp</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-grid">
+    <div class="foot-col">
+      <div class="foot-logo">DANDU</div>
+      <p>Maison de maroquinerie d'art.<br>Fondée en 2017 à Yaoundé<br>par Daniel &amp; Urweiller.</p>
+      <a href="https://www.instagram.com/danducm" target="_blank" style="color:var(--or-clair);margin-top:.6rem">Instagram → @danducm</a>
+    </div>
+    <div class="foot-col">
+      <div class="h">Collections</div>
+      <a onclick="openProduct(1)">Sac Zona</a>
+      <a onclick="openProduct(2)">Sandales Yao Boy</a>
+      <a onclick="openProduct(3)">Sac Kléopé</a>
+      <a onclick="openProduct(4)">Sac Kana</a>
+    </div>
+    <div class="foot-col">
+      <div class="h">La Maison</div>
+      <a onclick="scrollTo2('heritage')">L'Héritage</a>
+      <a onclick="scrollTo2('savoir')">Savoir-Faire</a>
+      <a onclick="scrollTo2('invite')">Contact</a>
+    </div>
+    <div class="foot-col">
+      <div class="h">Boutique</div>
+      <p>Dovv Simbock, Yaoundé<br>Cameroun</p>
+      <p>Lun–Sam · 9h–19h</p>
+      <a href="mailto:infodanducm@gmail.com">infodanducm@gmail.com</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <div>© 2026 DANDU — Daniel &amp; Urweiller. Tous droits réservés.</div>
+    <div class="cur-switch">
+      <button class="cur-btn active" data-cur="XAF" onclick="setCurrency('XAF')">FCFA</button>
+      <button class="cur-btn" data-cur="EUR" onclick="setCurrency('EUR')">€</button>
+    </div>
+  </div>
+</footer>
+
+<!-- MODAL PRODUIT -->
+<div class="overlay" id="overlay" onclick="closeAll()"></div>
+<div class="pmodal" id="pmodal">
+  <button class="pm-close" onclick="closeAll()">×</button>
+  <div class="pm-gallery">
+    <div class="pm-main" id="pmMain"><img id="pmImg" src="" alt=""></div>
+    <button class="pm-arrow prev" onclick="pmNav(-1)">‹</button>
+    <button class="pm-arrow next" onclick="pmNav(1)">›</button>
+    <div class="pm-dots" id="pmDots"></div>
+  </div>
+  <div class="pm-info">
+    <div class="kicker" id="pmCat">Collection</div>
+    <h2 id="pmName">Produit</h2>
+    <div class="pm-price" id="pmPrice"></div>
+    <p class="pm-desc" id="pmDesc"></p>
+    <ul class="pm-feats" id="pmFeats"></ul>
+    <div id="pmColorWrap">
+      <div class="pm-label">Couleur — <span id="pmColorLabel"></span></div>
+      <div class="pm-colors" id="pmColors"></div>
+    </div>
+    <div class="pm-actions">
+      <button class="btn full" id="pmAdd" onclick="addCurrentToCart()">Ajouter au panier</button>
+    </div>
+  </div>
+</div>
+
+<!-- PANIER -->
+<div class="cart" id="cart">
+  <div class="cart-head"><h3>Votre Panier</h3><button onclick="closeAll()">×</button></div>
+  <div class="cart-body" id="cartBody"></div>
+  <div class="cart-foot">
+    <div class="cart-total"><span class="t-l">Total</span><span class="t-v" id="cartTotal"></span></div>
+    <button class="btn gold full" onclick="checkoutWA()">Commander sur WhatsApp</button>
+    <div class="cart-note">Réservation et paiement finalisés avec la Maison via WhatsApp.</div>
+  </div>
+</div>
+
+<a class="wa-fab" href="https://wa.me/237621213280?text=Bonjour%20DANDU%20%F0%9F%91%8B" target="_blank" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.738-.985zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===== Données produits ===== */
+const products=[
+ {id:1,name:'Sac Zona',cat:'Sac à dos · Cuir grainé',price:15000,priceEUR:45,delivery:0,
+  desc:"Le sac à dos en cuir grainé, sangles nylon ajustables et doublure satinée. L'allure urbaine, l'âme artisanale.",
+  feats:['Cuir grainé de haute qualité','Sangles nylon ajustables','Poche latérale pour une bouteille','Intérieur doublé satin','Disponible : Marron · Noir'],
+  colors:[{label:'Marron',key:'marron'},{label:'Noir',key:'noir'}],
+  imgs:{'Marron':['assets/zona/marron/1.jpg','assets/zona/marron/2.jpg','assets/zona/marron/3.jpg','assets/zona/marron/4.jpg','assets/zona/marron/5.jpg'],
+        'Noir':['assets/zona/noir/1.jpg','assets/zona/noir/2.jpg','assets/zona/noir/3.jpg','assets/zona/noir/4.jpg','assets/zona/noir/5.jpg','assets/zona/noir/6.jpg']},
+  hero:'assets/hero-zona-2.jpg'},
+ {id:2,name:'Yao Boy',cat:'Sandales · Cuir cousu main',price:10000,priceEUR:35,delivery:1,
+  desc:"La sandale de cuir à double bride et boucles laiton, semelle confort moulée. Cousue main à Yaoundé.",
+  feats:['Cuir véritable effet croco','Double bride réglable, boucles laiton','Semelle confort moulée antidérapante','Coutures cousues main','Disponible : Noir · Marron · Vert','Livraison incluse'],
+  colors:[{label:'Noir',key:'noir'},{label:'Marron',key:'marron'},{label:'Vert',key:'vert'}],
+  imgs:{'Noir':['assets/yao-boy/noir/1.jpg','assets/yao-boy/noir/2.jpg','assets/yao-boy/noir/3.jpg','assets/yao-boy/noir/4.jpg','assets/yao-boy/noir/5.jpg'],
+        'Marron':['assets/yao-boy/marron/1.jpg'],'Vert':['assets/yao-boy/vert/1.jpg']},
+  hero:'assets/yao-boy/commun/1.jpg'},
+ {id:3,name:'Kléopé',cat:'Sac à dos roll-top',price:25000,priceEUR:65,delivery:0,
+  desc:"Le roll-top en toile tissée safran et cuir brun. Grande poche frontale, fermeture à enroulement. Une pièce unique, faite main.",
+  feats:['Toile tissée teintée safran, artisanale','Cuir brun véritable (poche & base)','Fermeture roll-top + sangles réglables','Monogramme DANDU embossé','Pièce unique faite main'],
+  colors:[{label:'Safran',key:'safran'}],
+  imgs:{'Safran':['assets/kleope/safran/1.jpg','assets/kleope/safran/2.jpg','assets/kleope/safran/3.jpg','assets/kleope/safran/4.jpg','assets/kleope/safran/5.jpg']},
+  hero:'assets/kleope/safran/1.jpg'},
+ {id:4,name:'Kana',cat:'Sac héritage · Cuir de mouton',price:190000,priceEUR:280,delivery:0,
+  desc:"Le sac héritage, inspiré du sac du successeur — symbole de pouvoir et de transmission. Cuir de mouton, tannage végétal, anse sculpturale cousue main.",
+  feats:["Inspiré du sac du successeur, symbole de pouvoir","Gardien du lien sacré avec les ancêtres","Cuir de mouton véritable","Tannage végétal — naturel et noble","Anse sculpturale en boucle, cousue main","Pièce d'héritage, faite main à Yaoundé"],
+  colors:[{label:'Naturel',key:'naturel'}],
+  imgs:{'Naturel':['assets/kana/naturel/1.jpeg','assets/kana/naturel/2.jpg','assets/kana/naturel/3.jpeg','assets/kana/naturel/4.jpeg']},
+  hero:'assets/kana/naturel/1.jpeg'}
+];
+
+/* ===== Devise ===== */
+var EUR_RATE=655.957;
+var CURRENCY=(function(){try{var s=localStorage.getItem('dandu_currency');return(s==='EUR'||s==='XAF')?s:'XAF';}catch(e){return'XAF';}})();
+function curUnit(o){if(CURRENCY==='EUR'){var e=Number(o&&o.priceEUR);if(e>0)return e;return(Number(o&&o.price)||0)/EUR_RATE;}return Number(o&&o.price)||0;}
+function fmtMoney(a){a=Number(a)||0;if(CURRENCY==='EUR')return a.toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';return Math.round(a).toLocaleString('fr-FR')+' FCFA';}
+function applyCurrency(c){CURRENCY=(c==='EUR')?'EUR':'XAF';renderRows();renderCart();if(currentProduct)renderModalPrice();document.querySelectorAll('.cur-btn').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-cur')===CURRENCY);});}
+function setCurrency(c){applyCurrency(c);try{localStorage.setItem('dandu_currency',CURRENCY);}catch(e){}}
+
+/* ===== Stock & prix (Google Sheet) ===== */
+var STOCK={};
+function parseMoneyFR(v){if(v==null)return NaN;var s=String(v).replace(/[^\d.,]/g,'');if(!s)return NaN;if(s.indexOf(',')>-1&&s.indexOf('.')>-1){s=s.replace(/\./g,'').replace(',','.');}else if(s.indexOf(',')>-1){s=s.replace(',','.');}return parseFloat(s);}
+function isOut(id){return STOCK[id]!==undefined&&STOCK[id]<=0;}
+function loadStock(){
+  fetch('https://opensheet.elk.sh/1tfuZzdrdjV5IHpaWn4V2CIALDSwy6hkXVjeEtNQTo4U/1').then(function(r){return r.json();}).then(function(rows){
+    rows.forEach(function(row){var id=String(row.id==null?'':row.id).trim();if(!id)return;var q=parseInt(row.quantite,10);if(!isNaN(q))STOCK[id]=q;var p=products.find(function(x){return String(x.id)===id;});if(!p)return;var pr=parseInt(String(row['Prix en FCFA']||row.Prix||'').replace(/[^0-9]/g,''),10);if(!isNaN(pr)&&pr>0)p.price=pr;var pe=parseMoneyFR(row['Prix en Euro']||row['Prix en euro']||row.Euro);if(!isNaN(pe)&&pe>0)p.priceEUR=pe;});
+    renderRows();if(currentProduct)renderModalPrice();
+  }).catch(function(){});
+}
+/* ===== Sync photos (manifests des dossiers) ===== */
+function loadProductPhotos(){
+  var cfg=[{id:1,f:'zona',c:{'Marron':'marron','Noir':'noir'}},{id:2,f:'yao-boy',c:{'Noir':'noir','Marron':'marron','Vert':'vert'}},{id:3,f:'kleope',c:{'Safran':'safran'}},{id:4,f:'kana',c:{'Naturel':'naturel'}}];
+  cfg.forEach(function(cf){
+    fetch('assets/'+cf.f+'/manifest.json?v='+Date.now()).then(function(r){return r.json();}).then(function(m){
+      var p=products.find(function(x){return x.id===cf.id;});if(!p)return;var changed=false;
+      Object.keys(cf.c).forEach(function(label){var k=cf.c[label];var arr=(m[k]||[]).map(function(fn){return 'assets/'+cf.f+'/'+k+'/'+fn;});if(arr.length){p.imgs[label]=arr;changed=true;}});
+      if(changed){renderRows();if(currentProduct&&currentProduct.id===cf.id)openProduct(cf.id,true);}
+    }).catch(function(){});
+  });
+}
+
+/* ===== Rendu des collections ===== */
+function renderRows(){
+  document.getElementById('prodRows').innerHTML=products.map(function(p,i){
+    var rev=i%2===1?' rev':'';
+    var out=isOut(p.id);
+    var price=fmtMoney(curUnit(p))+(out?'<span class="rupture">Rupture</span>':'');
+    var num='0'+(i+1);
+    return '<div class="prod-row reveal'+rev+'">'
+      +'<div class="prod-media" onclick="openProduct('+p.id+')"><span class="num">'+num+'</span><img src="'+(p.hero||p.imgs[p.colors[0].label][0])+'" alt="'+p.name+'"></div>'
+      +'<div class="prod-txt"><span class="kicker">'+p.cat+'</span><h3>'+p.name+'</h3><p>'+p.desc+'</p><div class="prod-price">'+price+'</div>'
+      +'<a class="link-u" onclick="openProduct('+p.id+')">Découvrir la pièce</a></div></div>';
+  }).join('');
+  observeReveal();
+}
+
+/* ===== Modal produit ===== */
+var currentProduct=null,currentColor=null,pmIndex=0;
+function openProduct(id,keep){
+  var p=products.find(function(x){return x.id===id;});if(!p)return;currentProduct=p;
+  if(!keep||!currentColor||!p.imgs[currentColor])currentColor=p.colors[0].label;
+  document.getElementById('pmCat').textContent=p.cat;
+  document.getElementById('pmName').textContent=p.name;
+  document.getElementById('pmDesc').textContent=p.desc;
+  document.getElementById('pmFeats').innerHTML=p.feats.map(function(f){return '<li>'+f+'</li>';}).join('');
+  document.getElementById('pmColorWrap').style.display=p.colors.length>1?'block':'none';
+  document.getElementById('pmColors').innerHTML=p.colors.map(function(c){return '<div class="swatch sw-'+c.key+(c.label===currentColor?' active':'')+'" title="'+c.label+'" onclick="pmSetColor(\''+c.label+'\')"></div>';}).join('');
+  document.getElementById('pmColorLabel').textContent=currentColor;
+  renderModalPrice();pmIndex=0;renderGallery();
+  if(!keep){document.getElementById('overlay').classList.add('open');document.getElementById('pmodal').classList.add('open');document.body.style.overflow='hidden';}
+}
+function renderModalPrice(){var p=currentProduct;var out=isOut(p.id);document.getElementById('pmPrice').innerHTML=fmtMoney(curUnit(p))+(out?'<span class="rupture">Rupture de stock</span>':'');var b=document.getElementById('pmAdd');if(out){b.textContent='Rupture de stock';b.style.opacity=.5;b.style.pointerEvents='none';}else{b.textContent='Ajouter au panier';b.style.opacity=1;b.style.pointerEvents='auto';}}
+function pmSetColor(label){currentColor=label;pmIndex=0;document.querySelectorAll('#pmColors .swatch').forEach(function(s){s.classList.toggle('active',s.title===label);});document.getElementById('pmColorLabel').textContent=label;renderGallery();}
+function curImgs(){return currentProduct.imgs[currentColor]||[];}
+function renderGallery(){
+  var imgs=curImgs();document.getElementById('pmImg').src=imgs[pmIndex]||'';
+  document.getElementById('pmDots').innerHTML=imgs.map(function(_,i){return '<span class="pm-dot'+(i===pmIndex?' active':'')+'" onclick="pmGo('+i+')"></span>';}).join('');
+  var show=imgs.length>1?'flex':'none';document.querySelectorAll('.pm-arrow').forEach(function(a){a.style.display=show;});document.getElementById('pmDots').style.display=show;
+}
+function pmGo(i){var imgs=curImgs();pmIndex=(i+imgs.length)%imgs.length;renderGallery();}
+function pmNav(d){pmGo(pmIndex+d);}
+
+/* ===== Panier ===== */
+var cart=[];try{cart=JSON.parse(localStorage.getItem('dandu2_cart')||'[]');}catch(e){cart=[];}
+function saveCart(){try{localStorage.setItem('dandu2_cart',JSON.stringify(cart));}catch(e){}}
+function addCurrentToCart(){var p=currentProduct;if(isOut(p.id))return;var key=p.id+'_'+currentColor;var ex=cart.find(function(i){return i.key===key;});if(ex)ex.qty++;else cart.push({key:key,id:p.id,name:p.name,color:currentColor,price:p.price,priceEUR:p.priceEUR,img:p.imgs[currentColor][0],qty:1});saveCart();updateCount();renderCart();toast(p.name+' ajouté');openCart();}
+function changeQty(key,d){var it=cart.find(function(i){return i.key===key;});if(!it)return;it.qty+=d;if(it.qty<=0)cart=cart.filter(function(i){return i.key!==key;});saveCart();updateCount();renderCart();}
+function removeItem(key){cart=cart.filter(function(i){return i.key!==key;});saveCart();updateCount();renderCart();}
+function updateCount(){var n=cart.reduce(function(s,i){return s+i.qty;},0);var el=document.getElementById('cCount');el.textContent=n;el.style.display=n>0?'inline-block':'none';}
+function renderCart(){
+  var body=document.getElementById('cartBody');
+  if(!cart.length){body.innerHTML='<div class="cart-empty">Votre panier est vide.</div>';}
+  else{body.innerHTML=cart.map(function(i){return '<div class="cart-item"><img src="'+i.img+'" alt=""><div><div class="ci-n">'+i.name+'</div><div class="ci-c">'+i.color+'</div><div class="ci-p">'+fmtMoney(curUnit(i)*i.qty)+'</div><div class="qty"><button onclick="changeQty(\''+i.key+'\',-1)">−</button><span>'+i.qty+'</span><button onclick="changeQty(\''+i.key+'\',1)">+</button></div></div><button class="ci-rm" onclick="removeItem(\''+i.key+'\')">Retirer</button></div>';}).join('');}
+  document.getElementById('cartTotal').textContent=fmtMoney(cart.reduce(function(s,i){return s+curUnit(i)*i.qty;},0));
+}
+function checkoutWA(){
+  if(!cart.length){toast('Votre panier est vide');return;}
+  var NL='\n',L=['Bonjour DANDU 👋','Je souhaite passer commande :',''];
+  cart.forEach(function(i){L.push('• '+i.name+' ('+i.color+') x'+i.qty+' — '+fmtMoney(curUnit(i)*i.qty));});
+  var totFcfa=cart.reduce(function(s,i){return s+i.price*i.qty;},0);
+  L.push('');L.push('Total : '+fmtMoney(cart.reduce(function(s,i){return s+curUnit(i)*i.qty;},0)));
+  if(CURRENCY==='EUR')L.push('Ref. FCFA : '+totFcfa.toLocaleString('fr-FR')+' FCFA');
+  window.open('https://wa.me/237621213280?text='+encodeURIComponent(L.join(NL)),'_blank');
+}
+
+/* ===== UI helpers ===== */
+function openCart(){renderCart();document.getElementById('overlay').classList.add('open');document.getElementById('cart').classList.add('open');document.body.style.overflow='hidden';}
+function closeAll(){document.getElementById('overlay').classList.remove('open');document.getElementById('pmodal').classList.remove('open');document.getElementById('cart').classList.remove('open');document.body.style.overflow='';currentProduct=null;}
+function toggleMob(){document.getElementById('mob').classList.toggle('open');}
+function scrollTo2(id){var el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});}
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2600);}
+
+/* ===== Header au scroll + reveal ===== */
+window.addEventListener('scroll',function(){document.getElementById('hdr').classList.toggle('scrolled',window.scrollY>60);},{passive:true});
+var io=null;
+function observeReveal(){
+  if(!io)io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0.12});
+  document.querySelectorAll('.reveal:not(.in)').forEach(function(el){io.observe(el);});
+}
+
+/* ===== Swipe tactile (galerie modal) ===== */
+(function(){var sx=0,sy=0;document.addEventListener('touchstart',function(e){var g=e.target.closest('.pm-gallery,.prod-media');if(!g)return;var t=e.touches[0];sx=t.clientX;sy=t.clientY;g.__s=true;},{passive:true});
+document.addEventListener('touchend',function(e){var g=e.target.closest('.pm-gallery,.prod-media');if(!g||!g.__s)return;g.__s=false;var t=e.changedTouches[0];var dx=t.clientX-sx,dy=t.clientY-sy;if(Math.abs(dx)>35&&Math.abs(dx)>Math.abs(dy)*1.3){if(g.classList.contains('pm-gallery'))pmNav(dx<0?1:-1);}},{passive:true});})();
+
+/* ===== Init ===== */
+renderRows();updateCount();
+loadStock();loadProductPhotos();
+/* auto-détection devise */
+(function(){var saved=null;try{saved=localStorage.getItem('dandu_currency');}catch(e){}if(saved==='EUR'||saved==='XAF'){applyCurrency(saved);return;}applyCurrency('XAF');
+var REG=['CM','CF','TD','CG','GA','GQ','BJ','BF','CI','GW','ML','NE','SN','TG'];
+var TZ=['Africa/Douala','Africa/Lagos','Africa/Bangui','Africa/Ndjamena','Africa/Brazzaville','Africa/Libreville','Africa/Malabo','Africa/Porto-Novo','Africa/Ouagadougou','Africa/Abidjan','Africa/Bissau','Africa/Bamako','Africa/Niamey','Africa/Dakar','Africa/Lome'];
+var tz='',reg='';try{tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'';}catch(e){}try{reg=((navigator.language||'').split('-')[1]||'').toUpperCase();}catch(e){}
+if(TZ.indexOf(tz)>=0||REG.indexOf(reg)>=0)return;
+function decide(cc){if(cc&&REG.indexOf(String(cc).toUpperCase())<0)applyCurrency('EUR');}
+fetch('https://ipwho.is/').then(function(r){return r.json();}).then(function(d){if(d&&d.country_code)decide(d.country_code);else throw 0;}).catch(function(){fetch('https://get.geojs.io/v1/ip/country.json').then(function(r){return r.json();}).then(function(d){decide(d&&d.country);}).catch(function(){});});})();
+</script>
+</body>
+</html>
