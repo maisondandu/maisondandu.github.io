@@ -249,6 +249,24 @@ footer{background:var(--noir);color:var(--ivoire);padding:5rem 3rem 0;}
 .mob-lang{margin-top:1.6rem;}
 .mob-lang .lang-btn,.mob-lang .lang-sep{color:var(--ivoire);font-size:.82rem;}
 
+/* ===== Modale commande ===== */
+.co-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-47%) scale(.97);width:min(500px,94vw);max-height:92vh;overflow-y:auto;background:var(--blanc);z-index:650;padding:2.8rem 2.4rem;opacity:0;visibility:hidden;transition:.4s cubic-bezier(.4,0,.1,1);box-shadow:0 30px 80px rgba(0,0,0,.3);}
+.co-modal.open{opacity:1;visibility:visible;transform:translate(-50%,-50%) scale(1);}
+.co-modal .kicker{margin-bottom:.3rem;}
+.co-modal h3{font-size:2rem;font-weight:400;margin-bottom:1.4rem;}
+.co-summary{border-top:1px solid var(--ligne);border-bottom:1px solid var(--ligne);padding:1rem 0;margin-bottom:1.6rem;font-size:.86rem;color:var(--txt-doux);}
+.co-summary .li{display:flex;justify-content:space-between;gap:1rem;padding:.2rem 0;}
+.co-summary .tot{display:flex;justify-content:space-between;margin-top:.6rem;padding-top:.6rem;border-top:1px solid var(--ligne);font-family:'Cormorant Garamond',serif;font-size:1.3rem;color:var(--or);}
+.co-in{width:100%;border:none;border-bottom:1px solid var(--ligne);background:none;padding:.75rem 0;font-family:'Jost',sans-serif;font-size:.9rem;color:var(--txt);margin-bottom:1.1rem;outline:none;}
+.co-in:focus{border-color:var(--or);}
+select.co-in{cursor:pointer;}
+textarea.co-in{resize:vertical;}
+.co-info{font-size:.72rem;color:var(--txt-doux);text-align:center;margin-top:1rem;font-weight:300;}
+.co-wa{display:block;text-align:center;margin-top:1rem;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--txt-doux);cursor:pointer;}
+.co-wa:hover{color:var(--or);}
+.co-success{display:none;text-align:center;color:var(--or);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.35rem;margin-top:1.2rem;}
+.co-success.show{display:block;}
+
 /* ===== Responsive ===== */
 @media(max-width:900px){
   .hdr{grid-template-columns:auto 1fr auto;padding:1.1rem 1.4rem;}
@@ -470,9 +488,32 @@ footer{background:var(--noir);color:var(--ivoire);padding:5rem 3rem 0;}
   <div class="cart-body" id="cartBody"></div>
   <div class="cart-foot">
     <div class="cart-total"><span class="t-l">Total</span><span class="t-v" id="cartTotal"></span></div>
-    <button class="btn gold full" onclick="checkoutWA()" data-i18n="cart.checkout">Commander sur WhatsApp</button>
+    <button class="btn gold full" onclick="openCheckout()" data-i18n="co.order">Commander</button>
     <div class="cart-note" data-i18n="cart.note">Réservation et paiement finalisés avec la Maison via WhatsApp.</div>
   </div>
+</div>
+
+<!-- MODALE COMMANDE -->
+<div class="co-modal" id="checkoutModal">
+  <button class="pm-close" onclick="closeCheckout()">×</button>
+  <div class="kicker" data-i18n="co.k">Commande</div>
+  <h3 data-i18n="co.title">Finaliser ma commande</h3>
+  <div class="co-summary" id="coSummary"></div>
+  <input class="co-in" id="coName" data-i18n-ph="co.name" placeholder="Nom complet *">
+  <input class="co-in" id="coEmail" type="email" data-i18n-ph="co.email" placeholder="Email *">
+  <input class="co-in" id="coPhone" data-i18n-ph="co.phone" placeholder="Téléphone (WhatsApp) *">
+  <input class="co-in" id="coCity" data-i18n-ph="co.city" placeholder="Ville / Quartier">
+  <select class="co-in" id="coMethod">
+    <option value="Orange Money">Orange Money</option>
+    <option value="MTN Mobile Money">MTN Mobile Money</option>
+    <option value="Espèces à la livraison" data-i18n="co.cash">Espèces à la livraison</option>
+    <option value="Virement bancaire" data-i18n="co.transfer">Virement bancaire</option>
+  </select>
+  <textarea class="co-in" id="coNote" rows="2" data-i18n-ph="co.note" placeholder="Précisions (optionnel)"></textarea>
+  <button class="btn gold full" onclick="submitOrder()" data-i18n="co.submit">Valider ma commande</button>
+  <div class="co-info" data-i18n="co.info">Vous recevrez un email de confirmation. Le paiement est finalisé avec la Maison.</div>
+  <a class="co-wa" onclick="checkoutWA()" data-i18n="co.wa">ou finaliser via WhatsApp</a>
+  <div class="co-success" id="coSuccess"></div>
 </div>
 
 <a class="wa-fab" href="https://wa.me/237621213280?text=Bonjour%20DANDU%20%F0%9F%91%8B" target="_blank" aria-label="WhatsApp">
@@ -547,7 +588,7 @@ var I18N={en:{
  'rev.k':'Testimonials','rev.t':'They chose DANDU','rev.leave':'Leave a review','rev.ft':'Leave a review','rev.send':'Post my review','rev.thanks':'Thank you for your review!','rev.np':'Your name','rev.tp':'Share your experience…',
  'inv.k':'Get in Touch','inv.t':'Enter the House','inv.p':'For an order, a bespoke piece or a visit to the Dovv Simbock boutique, our team welcomes you.','inv.btn':'Message us on WhatsApp',
  'foot.desc':'Leather goods atelier.<br>Founded in 2017 in Yaoundé<br>by Daniel &amp; Urweiller.','foot.c1':'Collections','foot.z':'Zona Bag','foot.y':'Yao Boy Sandals','foot.kl':'Kléopé Bag','foot.ka':'Kana Bag','foot.c2':'The House','foot.her':'The Heritage','foot.sav':'Savoir-Faire','foot.con':'Contact','foot.c3':'Boutique','foot.hours':'Mon–Sat · 9am–7pm','foot.copy':'© 2026 DANDU — Daniel &amp; Urweiller. All rights reserved.',
- 'ui.colour':'Colour','cart.t':'Your Cart','cart.checkout':'Order on WhatsApp','cart.note':'Reservation and payment finalised with the House via WhatsApp.'
+ 'ui.colour':'Colour','cart.t':'Your Cart','cart.checkout':'Order on WhatsApp','cart.note':'Reservation and payment finalised with the House via WhatsApp.','co.order':'Order','co.k':'Order','co.title':'Complete your order','co.name':'Full name *','co.email':'Email *','co.phone':'Phone (WhatsApp) *','co.city':'City / Area','co.cash':'Cash on delivery','co.transfer':'Bank transfer','co.note':'Notes (optional)','co.submit':'Place my order','co.info':"You'll receive a confirmation email. Payment is arranged with the House.",'co.wa':'or finalise via WhatsApp'
 }};
 function setLang(lang){
   LANG=(lang==='en')?'en':'fr';
@@ -656,9 +697,44 @@ function checkoutWA(){
   window.open('https://wa.me/237621213280?text='+encodeURIComponent(L.join(NL)),'_blank');
 }
 
+/* ===== Commande (enregistrement + facture email) ===== */
+var ORDERS_POST=''; /* <-- coller ici l'URL de l'application Web Apps Script */
+function openCheckout(){
+  if(!cart.length){toast(tt('cartEmpty'));return;}
+  var tot=fmtMoney(cart.reduce(function(s,i){return s+curUnit(i)*i.qty;},0));
+  document.getElementById('coSummary').innerHTML=cart.map(function(i){return '<div class="li"><span>'+i.qty+'× '+i.name+' ('+i.color+')</span><span>'+fmtMoney(curUnit(i)*i.qty)+'</span></div>';}).join('')+'<div class="tot"><span>Total</span><span>'+tot+'</span></div>';
+  document.getElementById('coSuccess').classList.remove('show');
+  document.getElementById('cart').classList.remove('open');
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('checkoutModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeCheckout(){document.getElementById('checkoutModal').classList.remove('open');document.getElementById('overlay').classList.remove('open');document.body.style.overflow='';}
+function submitOrder(){
+  var v=function(id){return (document.getElementById(id).value||'').trim();};
+  var name=v('coName'),email=v('coEmail'),phone=v('coPhone'),city=v('coCity'),note=v('coNote'),method=document.getElementById('coMethod').value;
+  if(!name||!phone||!email){toast(LANG==='en'?'Name, email and phone are required':'Nom, email et téléphone requis');return;}
+  if(!/^\S+@\S+\.\S+$/.test(email)){toast(LANG==='en'?'Invalid email':'Email invalide');return;}
+  var ref='DND-'+Date.now().toString().slice(-8);
+  var totDisplay=fmtMoney(cart.reduce(function(s,i){return s+curUnit(i)*i.qty;},0));
+  var payload={ref:ref,name:name,email:email,phone:phone,city:city,method:method,note:note,currency:CURRENCY,total:totDisplay,items:cart.map(function(i){return {name:i.name,color:i.color,qty:i.qty};})};
+  var fallbackUrl=null;
+  if(!ORDERS_POST){
+    var NL='\n',L=['Bonjour DANDU 👋','Je souhaite passer commande (réf '+ref+') :',''];
+    cart.forEach(function(i){L.push('• '+i.name+' ('+i.color+') x'+i.qty+' — '+fmtMoney(curUnit(i)*i.qty));});
+    L.push('');L.push('Total : '+totDisplay);L.push('');L.push('Nom : '+name);L.push('Email : '+email);L.push('Tel : '+phone);if(city)L.push('Ville : '+city);L.push('Mode : '+method);if(note)L.push('Note : '+note);
+    fallbackUrl='https://wa.me/237621213280?text='+encodeURIComponent(L.join(NL));
+  }
+  if(ORDERS_POST){try{fetch(ORDERS_POST,{method:'POST',body:JSON.stringify(payload)});}catch(e){}}
+  cart=[];saveCart();updateCount();renderCart();
+  if(fallbackUrl)window.open(fallbackUrl,'_blank');
+  var s=document.getElementById('coSuccess');s.textContent=(LANG==='en'?'Order placed — ref ':'Commande enregistrée — réf ')+ref;s.classList.add('show');
+  setTimeout(closeCheckout,2800);
+}
+
 /* ===== UI helpers ===== */
 function openCart(){renderCart();document.getElementById('overlay').classList.add('open');document.getElementById('cart').classList.add('open');document.body.style.overflow='hidden';}
-function closeAll(){document.getElementById('overlay').classList.remove('open');document.getElementById('pmodal').classList.remove('open');document.getElementById('cart').classList.remove('open');var rm=document.getElementById('reviewModal');if(rm)rm.classList.remove('open');document.body.style.overflow='';currentProduct=null;}
+function closeAll(){document.getElementById('overlay').classList.remove('open');document.getElementById('pmodal').classList.remove('open');document.getElementById('cart').classList.remove('open');var cm=document.getElementById('checkoutModal');if(cm)cm.classList.remove('open');document.body.style.overflow='';currentProduct=null;}
 function toggleMob(){document.getElementById('mob').classList.toggle('open');}
 function scrollTo2(id){var el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth'});}
 function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2600);}
