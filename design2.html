@@ -698,7 +698,7 @@ function checkoutWA(){
 }
 
 /* ===== Commande (enregistrement + facture email) ===== */
-var ORDERS_POST=''; /* <-- coller ici l'URL de l'application Web Apps Script */
+var ORDERS_POST='https://script.google.com/macros/s/AKfycbxXt9bvfsCDEVJE9kx9tChIPwlxFIBXP19Sxglk0ndovcK4DhXjeFE1LvCZ09WU33gu/exec';
 function openCheckout(){
   if(!cart.length){toast(tt('cartEmpty'));return;}
   var tot=fmtMoney(cart.reduce(function(s,i){return s+curUnit(i)*i.qty;},0));
