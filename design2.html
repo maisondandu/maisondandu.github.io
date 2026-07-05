@@ -179,6 +179,8 @@ footer{background:var(--noir);color:var(--ivoire);padding:5rem 3rem 0;}
 .pm-dot.active{background:#fff;width:22px;border-radius:4px;}
 .pm-info{padding:4rem 3.5rem;display:flex;flex-direction:column;overflow-y:auto;}
 .pm-close{position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;font-size:1.6rem;cursor:pointer;color:var(--txt);z-index:5;line-height:1;}
+.pm-back{position:absolute;top:1.4rem;left:1.4rem;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,.92);border:none;font-size:1.4rem;line-height:1;color:var(--noir);cursor:pointer;z-index:6;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 14px rgba(0,0,0,.15);transition:.3s;}
+.pm-back:hover{background:#fff;transform:translateX(-3px);}
 .pm-info .kicker{margin-bottom:1rem;}
 .pm-info h2{font-size:3rem;font-weight:300;margin-bottom:.5rem;}
 .pm-price{font-family:'Cormorant Garamond',serif;font-size:1.8rem;color:var(--or);margin-bottom:1.8rem;}
@@ -476,11 +478,9 @@ textarea.co-in{resize:vertical;}
 <!-- MODAL PRODUIT -->
 <div class="overlay" id="overlay" onclick="closeAll()"></div>
 <div class="pmodal" id="pmodal">
-  <button class="pm-close" onclick="closeAll()">×</button>
+  <button class="pm-back" onclick="closeAll()" aria-label="Retour">←</button>
   <div class="pm-gallery">
     <div class="pm-main" id="pmMain"><img id="pmImg" src="" alt=""></div>
-    <button class="pm-arrow prev" onclick="pmNav(-1)">‹</button>
-    <button class="pm-arrow next" onclick="pmNav(1)">›</button>
     <div class="pm-dots" id="pmDots"></div>
   </div>
   <div class="pm-info">
@@ -682,11 +682,11 @@ function openProduct(id,keep){
 }
 function renderModalPrice(){var p=currentProduct;var out=isOut(p.id);document.getElementById('pmPrice').innerHTML=fmtMoney(curUnit(p))+(out?'<span class="rupture">'+tt('outStock')+'</span>':'');var b=document.getElementById('pmAdd');if(out){b.textContent=tt('outStock');b.style.opacity=.5;b.style.pointerEvents='none';}else{b.textContent=tt('addCart');b.style.opacity=1;b.style.pointerEvents='auto';}}
 function pmSetColor(label){currentColor=label;pmIndex=0;document.querySelectorAll('#pmColors .swatch').forEach(function(s){s.classList.toggle('active',s.title===label);});document.getElementById('pmColorLabel').textContent=label;renderGallery();}
-function curImgs(){return currentProduct.imgs[currentColor]||[];}
+function curImgs(){return (currentProduct&&currentProduct.imgs[currentColor])||[];}
 function renderGallery(){
   var imgs=curImgs();document.getElementById('pmImg').src=imgs[pmIndex]||'';
   document.getElementById('pmDots').innerHTML=imgs.map(function(_,i){return '<span class="pm-dot'+(i===pmIndex?' active':'')+'" onclick="pmGo('+i+')"></span>';}).join('');
-  var show=imgs.length>1?'flex':'none';document.querySelectorAll('.pm-arrow').forEach(function(a){a.style.display=show;});document.getElementById('pmDots').style.display=show;
+  document.getElementById('pmDots').style.display=imgs.length>1?'flex':'none';
 }
 function pmGo(i){var imgs=curImgs();pmIndex=(i+imgs.length)%imgs.length;renderGallery();}
 function pmNav(d){pmGo(pmIndex+d);}
