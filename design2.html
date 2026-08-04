@@ -735,17 +735,14 @@ function submitOrder(){
   var ref='DND-'+Date.now().toString().slice(-8);
   var totDisplay=fmtMoney(cart.reduce(function(s,i){return s+curUnit(i)*i.qty;},0));
   var payload={ref:ref,name:name,email:email,phone:phone,city:city,method:method,note:note,currency:CURRENCY,total:totDisplay,items:cart.map(function(i){return {name:i.name,color:i.color,qty:i.qty};})};
-  var fallbackUrl=null;
-  if(!ORDERS_POST){
-    var NL='\n',L=['Bonjour DANDU 👋','Je souhaite passer commande (réf '+ref+') :',''];
-    cart.forEach(function(i){L.push('• '+i.name+' ('+i.color+') x'+i.qty+' — '+fmtMoney(curUnit(i)*i.qty));});
-    L.push('');L.push('Total : '+totDisplay);L.push('');L.push('Nom : '+name);L.push('Email : '+email);L.push('Tel : '+phone);if(city)L.push('Ville : '+city);L.push('Mode : '+method);if(note)L.push('Note : '+note);
-    fallbackUrl='https://wa.me/237621213280?text='+encodeURIComponent(L.join(NL));
-  }
+  var NL='\n',L=['Bonjour DANDU 👋','Je souhaite passer commande (réf '+ref+') :',''];
+  cart.forEach(function(i){L.push('• '+i.name+' ('+i.color+') x'+i.qty+' — '+fmtMoney(curUnit(i)*i.qty));});
+  L.push('');L.push('Total : '+totDisplay);L.push('');L.push('Nom : '+name);L.push('Email : '+email);L.push('Tel : '+phone);if(city)L.push('Ville : '+city);L.push('Mode : '+method);if(note)L.push('Note : '+note);
+  var waUrl='https://wa.me/237621213280?text='+encodeURIComponent(L.join(NL));
   if(ORDERS_POST){try{fetch(ORDERS_POST,{method:'POST',body:JSON.stringify(payload)});}catch(e){}}
   cart=[];saveCart();updateCount();renderCart();
-  if(fallbackUrl)window.open(fallbackUrl,'_blank');
-  var s=document.getElementById('coSuccess');s.textContent=(LANG==='en'?'Order placed — ref ':'Commande enregistrée — réf ')+ref;s.classList.add('show');
+  window.open(waUrl,'_blank');
+  var s=document.getElementById('coSuccess');s.textContent=(LANG==='en'?'Order sent on WhatsApp — ref ':'Commande envoyée sur WhatsApp — réf ')+ref;s.classList.add('show');
   setTimeout(closeCheckout,2800);
 }
 
