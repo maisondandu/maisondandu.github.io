@@ -634,7 +634,7 @@ function parseMoneyFR(v){if(v==null)return NaN;var s=String(v).replace(/[^\d.,]/
 function isOut(id){return STOCK[id]!==undefined&&STOCK[id]<=0;}
 function loadStock(){
   fetch('https://opensheet.elk.sh/1tfuZzdrdjV5IHpaWn4V2CIALDSwy6hkXVjeEtNQTo4U/1').then(function(r){return r.json();}).then(function(rows){
-    rows.forEach(function(row){var id=String(row.id==null?'':row.id).trim();if(!id)return;var q=parseInt(row.quantite,10);if(!isNaN(q))STOCK[id]=q;var p=products.find(function(x){return String(x.id)===id;});if(!p)return;var pr=parseInt(String(row['Prix en FCFA']||row.Prix||'').replace(/[^0-9]/g,''),10);if(!isNaN(pr)&&pr>0)p.price=pr;var pe=parseMoneyFR(row['Prix en Euro']||row['Prix en euro']||row.Euro);if(!isNaN(pe)&&pe>0)p.priceEUR=pe;});
+    rows.forEach(function(row){var id=String(row.id==null?'':row.id).trim();if(!id)return;var sv=(row['Stock restant']!=null&&String(row['Stock restant']).trim()!=='')?row['Stock restant']:row.quantite;var q=parseInt(String(sv).replace(/[^0-9-]/g,''),10);if(!isNaN(q))STOCK[id]=q;var p=products.find(function(x){return String(x.id)===id;});if(!p)return;var pr=parseInt(String(row['Prix en FCFA']||row.Prix||'').replace(/[^0-9]/g,''),10);if(!isNaN(pr)&&pr>0)p.price=pr;var pe=parseMoneyFR(row['Prix en Euro']||row['Prix en euro']||row.Euro);if(!isNaN(pe)&&pe>0)p.priceEUR=pe;});
     renderRows();if(currentProduct)renderModalPrice();
   }).catch(function(){});
 }
@@ -734,7 +734,7 @@ function submitOrder(){
   if(!/^\S+@\S+\.\S+$/.test(email)){toast(LANG==='en'?'Invalid email':'Email invalide');return;}
   var ref='DND-'+Date.now().toString().slice(-8);
   var totDisplay=fmtMoney(cart.reduce(function(s,i){return s+curUnit(i)*i.qty;},0));
-  var payload={ref:ref,name:name,email:email,phone:phone,city:city,method:method,note:note,currency:CURRENCY,total:totDisplay,items:cart.map(function(i){return {name:i.name,color:i.color,qty:i.qty};})};
+  var payload={ref:ref,name:name,email:email,phone:phone,city:city,method:method,note:note,currency:CURRENCY,total:totDisplay,items:cart.map(function(i){return {id:i.id,name:i.name,color:i.color,qty:i.qty};})};
   var NL='\n',L=['Bonjour DANDU 👋','Je souhaite passer commande (réf '+ref+') :',''];
   cart.forEach(function(i){L.push('• '+i.name+' ('+i.color+') x'+i.qty+' — '+fmtMoney(curUnit(i)*i.qty));});
   L.push('');L.push('Total : '+totDisplay);L.push('');L.push('Nom : '+name);L.push('Email : '+email);L.push('Tel : '+phone);if(city)L.push('Ville : '+city);L.push('Mode : '+method);if(note)L.push('Note : '+note);
