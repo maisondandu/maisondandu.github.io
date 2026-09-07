@@ -192,7 +192,7 @@ footer{background:var(--noir);color:var(--ivoire);padding:5rem 3rem 0;}
 .pm-label{font-size:0.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--txt-doux);margin-bottom:.8rem;}
 .swatch{width:30px;height:30px;border-radius:50%;cursor:pointer;border:1px solid var(--ligne);position:relative;transition:.3s;}
 .swatch.active{box-shadow:0 0 0 2px var(--blanc),0 0 0 3px var(--or);}
-.sw-marron{background:#7c4a2d;}.sw-noir{background:#1d1a17;}.sw-vert{background:#2f6f63;}.sw-safran{background:#c98a3c;}.sw-naturel{background:#7a2330;}
+.sw-marron{background:#7c4a2d;}.sw-noir{background:#1d1a17;}.sw-vert{background:#2f6f63;}.sw-safran{background:#c98a3c;}.sw-jaune-noir{background:linear-gradient(135deg,#c98a3c 0 50%,#1d1a17 50% 100%);}.sw-naturel{background:#7a2330;}
 .pm-actions{margin-top:auto;padding-top:2rem;}
 
 /* ===== Panier ===== */
@@ -567,8 +567,10 @@ const products=[
  {id:3,name:'Kléopé',cat:'Sac à dos roll-top',price:25000,priceEUR:65,delivery:0,
   desc:"Le roll-top en toile tissée safran et cuir brun. Grande poche frontale, fermeture à enroulement. Une pièce unique, faite main.",
   feats:['Toile tissée teintée safran, artisanale','Cuir brun véritable (poche & base)','Fermeture roll-top + sangles réglables','Monogramme DANDU embossé','Pièce unique faite main'],
-  colors:[{label:'Safran',key:'safran'}],
-  imgs:{'Safran':['assets/kleope/safran/1.jpg','assets/kleope/safran/2.jpg','assets/kleope/safran/3.jpg','assets/kleope/safran/4.jpg','assets/kleope/safran/5.jpg']},
+  colors:[{label:'Safran',key:'safran'},{label:'Safran & Noir',key:'jaune-noir'},{label:'Noir',key:'noir'}],
+  imgs:{'Safran':['assets/kleope/safran/1.jpg','assets/kleope/safran/2.jpg','assets/kleope/safran/3.jpg','assets/kleope/safran/4.jpg','assets/kleope/safran/5.jpg'],
+        'Safran & Noir':['assets/kleope/jaune-noir/1.jpg','assets/kleope/jaune-noir/2.jpg','assets/kleope/jaune-noir/3.jpg'],
+        'Noir':['assets/kleope/noir/1.jpg','assets/kleope/noir/2.jpg','assets/kleope/noir/3.jpg','assets/kleope/noir/4.jpg','assets/kleope/noir/5.jpg','assets/kleope/noir/6.jpg']},
   hero:'assets/kleope/safran/1.jpg'},
  {id:4,name:'Kana',cat:'Sac héritage · Cuir de mouton',price:190000,priceEUR:280,delivery:0,
   desc:"Le sac héritage, inspiré du sac du successeur — symbole de pouvoir et de transmission. Cuir de mouton, tannage végétal, anse sculpturale cousue main.",
@@ -640,7 +642,7 @@ function loadStock(){
 }
 /* ===== Sync photos (manifests des dossiers) ===== */
 function loadProductPhotos(){
-  var cfg=[{id:1,f:'zona',c:{'Marron':'marron','Noir':'noir'}},{id:2,f:'yao-boy',c:{'Noir':'noir','Marron':'marron','Vert':'vert'}},{id:3,f:'kleope',c:{'Safran':'safran'}},{id:4,f:'kana',c:{'Naturel':'naturel'}}];
+  var cfg=[{id:1,f:'zona',c:{'Marron':'marron','Noir':'noir'}},{id:2,f:'yao-boy',c:{'Noir':'noir','Marron':'marron','Vert':'vert'}},{id:3,f:'kleope',c:{'Safran':'safran','Safran & Noir':'jaune-noir','Noir':'noir'}},{id:4,f:'kana',c:{'Naturel':'naturel'}}];
   cfg.forEach(function(cf){
     fetch('assets/'+cf.f+'/manifest.json?v='+Date.now()).then(function(r){return r.json();}).then(function(m){
       var p=products.find(function(x){return x.id===cf.id;});if(!p)return;var changed=false;

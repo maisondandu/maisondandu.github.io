@@ -9,3 +9,6 @@
 !/assets/
 !/README.md
 !/.gitignore
+
+# Photos brutes (non optimisees) deposees dans assets/ : gardees en local, jamais publiees
+assets/**/*.jpg.jpeg
