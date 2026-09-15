@@ -550,21 +550,21 @@ textarea.co-in{resize:vertical;}
 <script>
 /* ===== Données produits ===== */
 const products=[
- {id:1,name:'Sac Zona',cat:'Sac à dos · Cuir grainé',price:15000,priceEUR:45,delivery:0,
+ {id:1,folder:'zona',name:'Sac Zona',cat:'Sac à dos · Cuir grainé',price:15000,priceEUR:45,delivery:0,
   desc:"Le sac à dos en cuir grainé, sangles nylon ajustables et doublure satinée. L'allure urbaine, l'âme artisanale.",
   feats:['Cuir grainé de haute qualité','Sangles nylon ajustables','Poche latérale pour une bouteille','Intérieur doublé satin','Disponible : Marron · Noir'],
   colors:[{label:'Marron',key:'marron'},{label:'Noir',key:'noir'}],
   imgs:{'Marron':['assets/zona/marron/1.jpg','assets/zona/marron/2.jpg','assets/zona/marron/3.jpg','assets/zona/marron/4.jpg','assets/zona/marron/5.jpg'],
         'Noir':['assets/zona/noir/1.jpg','assets/zona/noir/2.jpg','assets/zona/noir/3.jpg','assets/zona/noir/4.jpg','assets/zona/noir/5.jpg','assets/zona/noir/6.jpg']},
   hero:'assets/hero-zona-2.jpg'},
- {id:2,name:'Yao Boy',cat:'Sandales · Cuir cousu main',price:10000,priceEUR:35,delivery:1,
+ {id:2,folder:'yao-boy',name:'Yao Boy',cat:'Sandales · Cuir cousu main',price:10000,priceEUR:35,delivery:1,
   desc:"La sandale de cuir à double bride et boucles laiton, semelle confort moulée. Cousue main à Yaoundé.",
   feats:['Cuir véritable effet croco','Double bride réglable, boucles laiton','Semelle confort moulée antidérapante','Coutures cousues main','Disponible : Noir · Marron · Vert','Livraison incluse'],
   colors:[{label:'Noir',key:'noir'},{label:'Marron',key:'marron'},{label:'Vert',key:'vert'}],
   imgs:{'Noir':['assets/yao-boy/noir/1.jpg','assets/yao-boy/noir/2.jpg','assets/yao-boy/noir/3.jpg','assets/yao-boy/noir/4.jpg','assets/yao-boy/noir/5.jpg'],
         'Marron':['assets/yao-boy/marron/1.jpg'],'Vert':['assets/yao-boy/vert/1.jpg']},
   hero:'assets/yao-boy/commun/1.jpg'},
- {id:3,name:'Kléopé',cat:'Sac à dos roll-top',price:25000,priceEUR:65,delivery:0,
+ {id:3,folder:'kleope',name:'Kléopé',cat:'Sac à dos roll-top',price:25000,priceEUR:65,delivery:0,
   desc:"Le roll-top en toile tissée safran et cuir brun. Grande poche frontale, fermeture à enroulement. Une pièce unique, faite main.",
   feats:['Toile tissée teintée safran, artisanale','Cuir brun véritable (poche & base)','Fermeture roll-top + sangles réglables','Monogramme DANDU embossé','Pièce unique faite main'],
   colors:[{label:'Safran',key:'safran'},{label:'Safran & Noir',key:'jaune-noir'},{label:'Noir',key:'noir'}],
@@ -572,7 +572,7 @@ const products=[
         'Safran & Noir':['assets/kleope/jaune-noir/1.jpg','assets/kleope/jaune-noir/2.jpg','assets/kleope/jaune-noir/3.jpg'],
         'Noir':['assets/kleope/noir/1.jpg','assets/kleope/noir/2.jpg','assets/kleope/noir/3.jpg','assets/kleope/noir/4.jpg','assets/kleope/noir/5.jpg','assets/kleope/noir/6.jpg']},
   hero:'assets/kleope/safran/1.jpg'},
- {id:4,name:'Kana',cat:'Sac héritage · Cuir de mouton',price:190000,priceEUR:280,delivery:0,
+ {id:4,folder:'kana',name:'Kana',cat:'Sac héritage · Cuir de mouton',price:190000,priceEUR:280,delivery:0,
   desc:"Le sac héritage, inspiré du sac du successeur — symbole de pouvoir et de transmission. Cuir de mouton, tannage végétal, anse sculpturale cousue main.",
   feats:["Inspiré du sac du successeur, symbole de pouvoir","Gardien du lien sacré avec les ancêtres","Cuir de mouton véritable","Tannage végétal — naturel et noble","Anse sculpturale en boucle, cousue main","Pièce d'héritage, faite main à Yaoundé"],
   colors:[{label:'Naturel',key:'naturel'}],
@@ -634,21 +634,78 @@ function setCurrency(c){applyCurrency(c);try{localStorage.setItem('dandu_currenc
 var STOCK={};
 function parseMoneyFR(v){if(v==null)return NaN;var s=String(v).replace(/[^\d.,]/g,'');if(!s)return NaN;if(s.indexOf(',')>-1&&s.indexOf('.')>-1){s=s.replace(/\./g,'').replace(',','.');}else if(s.indexOf(',')>-1){s=s.replace(',','.');}return parseFloat(s);}
 function isOut(id){return STOCK[id]!==undefined&&STOCK[id]<=0;}
+/* URL de la Google Sheet (onglet produits). */
+var SHEET_URL='https://opensheet.elk.sh/1tfuZzdrdjV5IHpaWn4V2CIALDSwy6hkXVjeEtNQTo4U/1';
+/* Transforme un texte en clé/slug : "Safran & Noir" -> "safran-noir" */
+function slugify(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');}
+/* Crée un NOUVEAU produit à partir d'une ligne de la Sheet (colonnes : produit, Catégorie, Description, Couleurs, Dossier, Délai, Caractéristiques). */
+function makeProductFromRow(row,id,pr,pe){
+  var name=String(row.produit||row.Produit||'').trim();
+  var folder=slugify(row['Dossier']||row.Dossier||row.dossier||name);
+  if(!name||!folder)return null;
+  var raw=String(row['Couleurs']||row.Couleurs||row.couleurs||'').trim();
+  var labels=raw?raw.split(',').map(function(s){return s.trim();}).filter(Boolean):['Standard'];
+  var colors=labels.map(function(l){return {label:l,key:slugify(l)};});
+  var np={id:parseInt(id,10)||id,folder:folder,name:name,
+    cat:String(row['Catégorie']||row['Categorie']||row.categorie||'').trim(),
+    price:(!isNaN(pr)&&pr>0)?pr:0,priceEUR:(!isNaN(pe)&&pe>0)?pe:0,
+    delivery:parseInt(String(row['Délai']||row['Delai']||row.delai||'0').replace(/[^0-9]/g,''),10)||0,
+    desc:String(row['Description']||row.description||'').trim(),
+    feats:String(row['Caractéristiques']||row['Caracteristiques']||'').split('|').map(function(s){return s.trim();}).filter(Boolean),
+    colors:colors,imgs:{},hero:null,_new:true};
+  colors.forEach(function(c){np.imgs[c.label]=[];});
+  return np;
+}
 function loadStock(){
-  fetch('https://opensheet.elk.sh/1tfuZzdrdjV5IHpaWn4V2CIALDSwy6hkXVjeEtNQTo4U/1').then(function(r){return r.json();}).then(function(rows){
-    rows.forEach(function(row){var id=String(row.id==null?'':row.id).trim();if(!id)return;var sv=(row['Stock restant']!=null&&String(row['Stock restant']).trim()!=='')?row['Stock restant']:row.quantite;var q=parseInt(String(sv).replace(/[^0-9-]/g,''),10);if(!isNaN(q))STOCK[id]=q;var p=products.find(function(x){return String(x.id)===id;});if(!p)return;var pr=parseInt(String(row['Prix en FCFA']||row.Prix||'').replace(/[^0-9]/g,''),10);if(!isNaN(pr)&&pr>0)p.price=pr;var pe=parseMoneyFR(row['Prix en Euro']||row['Prix en euro']||row.Euro);if(!isNaN(pe)&&pe>0)p.priceEUR=pe;});
+  fetch(SHEET_URL).then(function(r){return r.json();}).then(function(rows){
+    var added=false;
+    rows.forEach(function(row){
+      var id=String(row.id==null?'':row.id).trim();if(!id)return;
+      var sv=(row['Stock restant']!=null&&String(row['Stock restant']).trim()!=='')?row['Stock restant']:row.quantite;
+      var q=parseInt(String(sv).replace(/[^0-9-]/g,''),10);if(!isNaN(q))STOCK[id]=q;
+      var pr=parseInt(String(row['Prix en FCFA']||row.Prix||'').replace(/[^0-9]/g,''),10);
+      var pe=parseMoneyFR(row['Prix en Euro']||row['Prix en euro']||row.Euro);
+      var p=products.find(function(x){return String(x.id)===id;});
+      if(p){if(!isNaN(pr)&&pr>0)p.price=pr;if(!isNaN(pe)&&pe>0)p.priceEUR=pe;}
+      else{var np=makeProductFromRow(row,id,pr,pe);if(np){products.push(np);added=true;}}
+    });
+    products.sort(function(a,b){return (parseInt(a.id,10)||0)-(parseInt(b.id,10)||0);});
     renderRows();if(currentProduct)renderModalPrice();
+    if(added)loadProductPhotos();
   }).catch(function(){});
 }
-/* ===== Sync photos (manifests des dossiers) ===== */
+/* ===== Couleurs : pastille auto d'après le nom (FR) ===== */
+var COLOR_HEX={noir:'#1d1a17',blanc:'#efe9dc',ivoire:'#f0e9da',gris:'#8a8580',marron:'#7c4a2d',brun:'#6b4226',chocolat:'#4b2e21',beige:'#cdb999',camel:'#b3905b',cognac:'#9c5a2c',fauve:'#9c6b3f',tan:'#b98b5e',safran:'#c98a3c',jaune:'#d7b13a',moutarde:'#c99a2c',or:'#b3905b',dore:'#b3905b',vert:'#2f6f63',olive:'#5c5a2f',kaki:'#6b6b47',bleu:'#2f4a6f',marine:'#1f2d4a',turquoise:'#2f8f8f',rouge:'#7a2330',bordeaux:'#5c1f27',rose:'#c98aa0',orange:'#c8702c',violet:'#5b3a6b',naturel:'#8a7657'};
+function swatchBg(key){var hx=[];String(key||'').split('-').forEach(function(p){if(COLOR_HEX[p])hx.push(COLOR_HEX[p]);});if(hx.length>=2)return 'linear-gradient(135deg,'+hx[0]+' 0 50%,'+hx[1]+' 50% 100%)';if(hx.length===1)return hx[0];return '#b3905b';}
+/* ===== Photos : auto-détection des fichiers 1.jpg, 2.jpg… dans chaque dossier couleur ===== */
+function probeColor(folder,key,done){
+  var found=[],i=1,exts=['jpg','jpeg'],MAX=30;
+  (function tryIdx(){
+    if(i>MAX){done(found);return;}
+    var ei=0;
+    (function tryExt(){
+      if(ei>=exts.length){done(found);return;}
+      fetch('assets/'+folder+'/'+key+'/'+i+'.'+exts[ei],{method:'HEAD'}).then(function(r){
+        if(r.ok){found.push('assets/'+folder+'/'+key+'/'+i+'.'+exts[ei]);i++;tryIdx();}else{ei++;tryExt();}
+      }).catch(function(){ei++;tryExt();});
+    })();
+  })();
+}
 function loadProductPhotos(){
-  var cfg=[{id:1,f:'zona',c:{'Marron':'marron','Noir':'noir'}},{id:2,f:'yao-boy',c:{'Noir':'noir','Marron':'marron','Vert':'vert'}},{id:3,f:'kleope',c:{'Safran':'safran','Safran & Noir':'jaune-noir','Noir':'noir'}},{id:4,f:'kana',c:{'Naturel':'naturel'}}];
-  cfg.forEach(function(cf){
-    fetch('assets/'+cf.f+'/manifest.json?v='+Date.now()).then(function(r){return r.json();}).then(function(m){
-      var p=products.find(function(x){return x.id===cf.id;});if(!p)return;var changed=false;
-      Object.keys(cf.c).forEach(function(label){var k=cf.c[label];var arr=(m[k]||[]).map(function(fn){return 'assets/'+cf.f+'/'+k+'/'+fn;});if(arr.length){p.imgs[label]=arr;changed=true;}});
-      if(changed){renderRows();if(currentProduct&&currentProduct.id===cf.id)openProduct(cf.id,true);}
-    }).catch(function(){});
+  products.forEach(function(p){
+    if(p._photosLoaded||!p.folder||!p.colors||!p.colors.length)return;
+    p._photosLoaded=true;
+    var pending=p.colors.length;
+    p.colors.forEach(function(c){
+      probeColor(p.folder,c.key,function(arr){
+        if(arr.length)p.imgs[c.label]=arr;
+        if(--pending===0){
+          var first=p.imgs[p.colors[0].label];
+          if((!p.hero||p._new)&&first&&first[0])p.hero=first[0];
+          renderRows();if(currentProduct&&currentProduct.id===p.id)openProduct(p.id,true);
+        }
+      });
+    });
   });
 }
 
@@ -677,7 +734,7 @@ function openProduct(id,keep){
   document.getElementById('pmDesc').textContent=p.desc;
   document.getElementById('pmFeats').innerHTML=p.feats.map(function(f){return '<li>'+f+'</li>';}).join('');
   document.getElementById('pmColorWrap').style.display=p.colors.length>1?'block':'none';
-  document.getElementById('pmColors').innerHTML=p.colors.map(function(c){return '<div class="swatch sw-'+c.key+(c.label===currentColor?' active':'')+'" title="'+c.label+'" onclick="pmSetColor(\''+c.label+'\')"></div>';}).join('');
+  document.getElementById('pmColors').innerHTML=p.colors.map(function(c){return '<div class="swatch'+(c.label===currentColor?' active':'')+'" style="background:'+swatchBg(c.key)+'" title="'+c.label+'" onclick="pmSetColor(\''+c.label.replace(/'/g,"\\'")+'\')"></div>';}).join('');
   document.getElementById('pmColorLabel').textContent=currentColor;
   renderModalPrice();pmIndex=0;renderGallery();
   if(!keep){document.getElementById('overlay').classList.add('open');document.getElementById('pmodal').classList.add('open');document.body.style.overflow='hidden';}
