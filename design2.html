@@ -193,6 +193,7 @@ footer{background:var(--noir);color:var(--ivoire);padding:5rem 3rem 0;}
 .swatch{width:30px;height:30px;border-radius:50%;cursor:pointer;border:1px solid var(--ligne);position:relative;transition:.3s;}
 .swatch.active{box-shadow:0 0 0 2px var(--blanc),0 0 0 3px var(--or);}
 .sw-marron{background:#7c4a2d;}.sw-noir{background:#1d1a17;}.sw-vert{background:#2f6f63;}.sw-safran{background:#c98a3c;}.sw-jaune-noir{background:linear-gradient(135deg,#c98a3c 0 50%,#1d1a17 50% 100%);}.sw-naturel{background:#7a2330;}
+.on-req{font-style:italic;font-size:.82em;letter-spacing:.5px;opacity:.9;}
 .pm-actions{margin-top:auto;padding-top:2rem;}
 
 /* ===== Panier ===== */
@@ -589,8 +590,8 @@ const PRODUCTS_EN={
 };
 var LANG=(function(){try{return localStorage.getItem('dandu_lang')==='en'?'en':'fr';}catch(e){return 'fr';}})();
 var UI={
- fr:{discover:'Découvrir la pièce',addCart:'Ajouter au panier',outStock:'Rupture de stock',rupture:'Rupture',remove:'Retirer',emptyCart:'Votre panier est vide.',added:'ajouté',cartEmpty:'Votre panier est vide',revEmpty:'Soyez le premier à laisser un avis.'},
- en:{discover:'Discover the piece',addCart:'Add to cart',outStock:'Out of stock',rupture:'Sold out',remove:'Remove',emptyCart:'Your cart is empty.',added:'added',cartEmpty:'Your cart is empty',revEmpty:'Be the first to leave a review.'}
+ fr:{discover:'Découvrir la pièce',addCart:'Ajouter au panier',outStock:'Rupture de stock',rupture:'Rupture',remove:'Retirer',emptyCart:'Votre panier est vide.',added:'ajouté',cartEmpty:'Votre panier est vide',revEmpty:'Soyez le premier à laisser un avis.',onReq:'Prix sur demande',askPrice:'Demander le prix sur WhatsApp'},
+ en:{discover:'Discover the piece',addCart:'Add to cart',outStock:'Out of stock',rupture:'Sold out',remove:'Remove',emptyCart:'Your cart is empty.',added:'added',cartEmpty:'Your cart is empty',revEmpty:'Be the first to leave a review.',onReq:'Price on request',askPrice:'Ask the price on WhatsApp'}
 };
 function tt(k){return (UI[LANG]&&UI[LANG][k]!=null)?UI[LANG][k]:(UI.fr[k]||k);}
 var I18N={en:{
@@ -648,7 +649,7 @@ function makeProductFromRow(row,id,pr,pe){
   var colors=labels.map(function(l){return {label:l,key:slugify(l)};});
   var np={id:parseInt(id,10)||id,folder:folder,name:name,
     cat:String(row['Catégorie']||row['Categorie']||row.categorie||'').trim(),
-    price:(!isNaN(pr)&&pr>0)?pr:0,priceEUR:(!isNaN(pe)&&pe>0)?pe:0,
+    price:(!isNaN(pr)&&pr>0)?pr:0,priceEUR:(!isNaN(pe)&&pe>0)?pe:0,noPrice:!(!isNaN(pr)&&pr>0),
     delivery:parseInt(String(row['Délai']||row['Delai']||row.delai||'0').replace(/[^0-9]/g,''),10)||0,
     desc:String(row['Description']||row.description||'').trim(),
     feats:String(row['Caractéristiques']||row['Caracteristiques']||'').split('|').map(function(s){return s.trim();}).filter(Boolean),
@@ -666,7 +667,7 @@ function loadStock(){
       var pr=parseInt(String(row['Prix en FCFA']||row.Prix||'').replace(/[^0-9]/g,''),10);
       var pe=parseMoneyFR(row['Prix en Euro']||row['Prix en euro']||row.Euro);
       var p=products.find(function(x){return String(x.id)===id;});
-      if(p){if(!isNaN(pr)&&pr>0)p.price=pr;if(!isNaN(pe)&&pe>0)p.priceEUR=pe;}
+      if(p){if(!isNaN(pr)&&pr>0){p.price=pr;p.noPrice=false;}else{p.noPrice=true;}if(!isNaN(pe)&&pe>0)p.priceEUR=pe;}
       else{var np=makeProductFromRow(row,id,pr,pe);if(np){products.push(np);added=true;}}
     });
     products.sort(function(a,b){return (parseInt(a.id,10)||0)-(parseInt(b.id,10)||0);});
@@ -714,7 +715,7 @@ function renderRows(){
   document.getElementById('prodRows').innerHTML=products.map(function(p,i){
     var rev=i%2===1?' rev':'';
     var out=isOut(p.id);
-    var price=fmtMoney(curUnit(p))+(out?'<span class="rupture">'+tt('rupture')+'</span>':'');
+    var price=(p.noPrice?'<span class="on-req">'+tt('onReq')+'</span>':fmtMoney(curUnit(p)))+(out?'<span class="rupture">'+tt('rupture')+'</span>':'');
     var num='0'+(i+1);
     return '<div class="prod-row reveal'+rev+'">'
       +'<div class="prod-media" onclick="openProduct('+p.id+')"><span class="num">'+num+'</span><img src="'+(p.hero||p.imgs[p.colors[0].label][0])+'" alt="'+p.name+'"></div>'
@@ -739,7 +740,7 @@ function openProduct(id,keep){
   renderModalPrice();pmIndex=0;renderGallery();
   if(!keep){document.getElementById('overlay').classList.add('open');document.getElementById('pmodal').classList.add('open');document.body.style.overflow='hidden';}
 }
-function renderModalPrice(){var p=currentProduct;var out=isOut(p.id);document.getElementById('pmPrice').innerHTML=fmtMoney(curUnit(p))+(out?'<span class="rupture">'+tt('outStock')+'</span>':'');var b=document.getElementById('pmAdd');if(out){b.textContent=tt('outStock');b.style.opacity=.5;b.style.pointerEvents='none';}else{b.textContent=tt('addCart');b.style.opacity=1;b.style.pointerEvents='auto';}}
+function renderModalPrice(){var p=currentProduct;var out=isOut(p.id);document.getElementById('pmPrice').innerHTML=(p.noPrice?'<span class="on-req">'+tt('onReq')+'</span>':fmtMoney(curUnit(p)))+(out?'<span class="rupture">'+tt('outStock')+'</span>':'');var b=document.getElementById('pmAdd');if(out){b.textContent=tt('outStock');b.style.opacity=.5;b.style.pointerEvents='none';}else if(p.noPrice){b.textContent=tt('askPrice');b.style.opacity=1;b.style.pointerEvents='auto';}else{b.textContent=tt('addCart');b.style.opacity=1;b.style.pointerEvents='auto';}}
 function pmSetColor(label){currentColor=label;pmIndex=0;document.querySelectorAll('#pmColors .swatch').forEach(function(s){s.classList.toggle('active',s.title===label);});document.getElementById('pmColorLabel').textContent=label;renderGallery();}
 function curImgs(){return (currentProduct&&currentProduct.imgs[currentColor])||[];}
 function renderGallery(){
@@ -753,7 +754,8 @@ function pmNav(d){pmGo(pmIndex+d);}
 /* ===== Panier ===== */
 var cart=[];try{cart=JSON.parse(localStorage.getItem('dandu2_cart')||'[]');}catch(e){cart=[];}
 function saveCart(){try{localStorage.setItem('dandu2_cart',JSON.stringify(cart));}catch(e){}}
-function addCurrentToCart(){var p=currentProduct;if(isOut(p.id))return;var key=p.id+'_'+currentColor;var ex=cart.find(function(i){return i.key===key;});if(ex)ex.qty++;else cart.push({key:key,id:p.id,name:p.name,color:currentColor,price:p.price,priceEUR:p.priceEUR,img:p.imgs[currentColor][0],qty:1});saveCart();updateCount();renderCart();toast(p.name+' '+tt('added'));openCart();}
+function askPriceWA(p){var msg=(LANG==='en'?'Hello DANDU, I would like the price of ':'Bonjour DANDU, je souhaite connaître le prix de ')+p.name+' ('+currentColor+').';window.open('https://wa.me/237621213280?text='+encodeURIComponent(msg),'_blank');}
+function addCurrentToCart(){var p=currentProduct;if(isOut(p.id))return;if(p.noPrice){askPriceWA(p);return;}var key=p.id+'_'+currentColor;var ex=cart.find(function(i){return i.key===key;});if(ex)ex.qty++;else cart.push({key:key,id:p.id,name:p.name,color:currentColor,price:p.price,priceEUR:p.priceEUR,img:(p.imgs[currentColor]&&p.imgs[currentColor][0])||p.hero||'',qty:1});saveCart();updateCount();renderCart();toast(p.name+' '+tt('added'));openCart();}
 function changeQty(key,d){var it=cart.find(function(i){return i.key===key;});if(!it)return;it.qty+=d;if(it.qty<=0)cart=cart.filter(function(i){return i.key!==key;});saveCart();updateCount();renderCart();}
 function removeItem(key){cart=cart.filter(function(i){return i.key!==key;});saveCart();updateCount();renderCart();}
 function updateCount(){var n=cart.reduce(function(s,i){return s+i.qty;},0);var el=document.getElementById('cCount');el.textContent=n;el.style.display=n>0?'inline-block':'none';}
