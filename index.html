@@ -578,7 +578,14 @@ const products=[
   feats:["Inspiré du sac du successeur, symbole de pouvoir","Gardien du lien sacré avec les ancêtres","Cuir de mouton véritable","Tannage végétal — naturel et noble","Anse sculpturale en boucle, cousue main","Pièce d'héritage, faite main à Yaoundé"],
   colors:[{label:'Naturel',key:'naturel'}],
   imgs:{'Naturel':['assets/kana/naturel/1.jpeg','assets/kana/naturel/2.jpg','assets/kana/naturel/3.jpeg','assets/kana/naturel/4.jpeg']},
-  hero:'assets/kana/naturel/1.jpeg'}
+  hero:'assets/kana/naturel/1.jpeg'},
+ {id:5,folder:'niara',name:'Sac Niara',cat:'Sac épaule · Toile & cuir',price:0,priceEUR:0,delivery:0,noPrice:true,
+  desc:"Le sac demi-lune en toile tissée et cuir véritable : anse arrondie et bandoulière amovible. Une courbe douce, une allure intemporelle. Fait main à Yaoundé.",
+  feats:['Toile tissée artisanale','Cuir véritable (anse & finitions)','Anse arrondie + bandoulière amovible','Monogramme DANDU embossé','Fait main à Yaoundé','Disponible : Camel · Vert'],
+  colors:[{label:'Camel',key:'camel'},{label:'Vert',key:'vert'}],
+  imgs:{'Camel':['assets/niara/camel/1.jpg','assets/niara/camel/2.jpg','assets/niara/camel/3.jpg','assets/niara/camel/4.jpg','assets/niara/camel/5.jpg','assets/niara/camel/6.jpg'],
+        'Vert':['assets/niara/vert/1.jpg','assets/niara/vert/2.jpg','assets/niara/vert/3.jpg','assets/niara/vert/4.jpg','assets/niara/vert/5.jpg','assets/niara/vert/6.jpg']},
+  hero:'assets/niara/camel/1.jpg'}
 ];
 
 /* ===== Bilingue FR / EN ===== */
@@ -586,7 +593,8 @@ const PRODUCTS_EN={
  1:{name:'Zona Bag',cat:'Backpack · Grained leather',desc:"The grained-leather backpack, adjustable nylon straps and satin lining. Urban allure, artisan soul.",feats:['High-quality grained leather','Adjustable nylon straps','Side pocket for a bottle','Satin-lined interior','Available: Marron · Noir']},
  2:{name:'Yao Boy',cat:'Sandals · Hand-stitched leather',desc:"The leather sandal with double strap and brass buckles, moulded comfort sole. Hand-stitched in Yaoundé.",feats:['Genuine croc-effect leather','Adjustable double strap, brass buckles','Non-slip moulded comfort sole','Hand-stitched seams','Available: Noir · Marron · Vert','Shipping included']},
  3:{name:'Kléopé',cat:'Roll-top backpack',desc:"The roll-top in saffron woven fabric and brown leather. Large front pocket, roll-top closure. A unique handmade piece.",feats:['Artisanal saffron-dyed woven fabric','Genuine brown leather (pocket & base)','Roll-top closure + adjustable straps','Embossed DANDU monogram','Unique handmade piece']},
- 4:{name:'Kana',cat:'Heritage bag · Sheepskin',desc:"The heritage bag, inspired by the successor's bag — a symbol of power and transmission. Sheepskin, vegetable-tanned, sculptural hand-stitched handle.",feats:["Inspired by the successor's bag, a symbol of power","Keeper of the sacred bond with the ancestors","Genuine sheepskin leather","Vegetable tanning — natural and noble","Sculptural looped handle, hand-stitched","Heritage piece, handcrafted in Yaoundé"]}
+ 4:{name:'Kana',cat:'Heritage bag · Sheepskin',desc:"The heritage bag, inspired by the successor's bag — a symbol of power and transmission. Sheepskin, vegetable-tanned, sculptural hand-stitched handle.",feats:["Inspired by the successor's bag, a symbol of power","Keeper of the sacred bond with the ancestors","Genuine sheepskin leather","Vegetable tanning — natural and noble","Sculptural looped handle, hand-stitched","Heritage piece, handcrafted in Yaoundé"]},
+ 5:{name:'Niara Bag',cat:'Shoulder bag · Fabric & leather',desc:"The half-moon bag in woven fabric and genuine leather: rounded handle and removable shoulder strap. A soft curve, a timeless allure. Handmade in Yaoundé.",feats:['Artisanal woven fabric','Genuine leather (handle & trims)','Rounded handle + removable strap','Embossed DANDU monogram','Handmade in Yaoundé','Available: Camel · Vert']}
 };
 var LANG=(function(){try{return localStorage.getItem('dandu_lang')==='en'?'en':'fr';}catch(e){return 'fr';}})();
 var UI={
