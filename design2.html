@@ -684,11 +684,12 @@ function loadStock(){
       var q=parseInt(String(sv).replace(/[^0-9-]/g,''),10);if(!isNaN(q))STOCK[id]=q;
       var pr=parseInt(String(row['Prix en FCFA']||row.Prix||'').replace(/[^0-9]/g,''),10);
       var pe=parseMoneyFR(row['Prix en Euro']||row['Prix en euro']||row.Euro);
+      var ord=parseInt(String(row['Ordre']||row.ordre||'').replace(/[^0-9]/g,''),10);
       var p=products.find(function(x){return String(x.id)===id;});
-      if(p){if(!isNaN(pr)&&pr>0){p.price=pr;p.noPrice=false;}else{p.noPrice=true;}if(!isNaN(pe)&&pe>0)p.priceEUR=pe;}
-      else{var np=makeProductFromRow(row,id,pr,pe);if(np){products.push(np);added=true;}}
+      if(p){if(!isNaN(pr)&&pr>0){p.price=pr;p.noPrice=false;}else{p.noPrice=true;}if(!isNaN(pe)&&pe>0)p.priceEUR=pe;if(!isNaN(ord))p.ordre=ord;}
+      else{var np=makeProductFromRow(row,id,pr,pe);if(np){if(!isNaN(ord))np.ordre=ord;products.push(np);added=true;}}
     });
-    products.sort(function(a,b){return (parseInt(a.id,10)||0)-(parseInt(b.id,10)||0);});
+    products.sort(function(a,b){var ka=(a.ordre!=null&&!isNaN(a.ordre))?a.ordre:9000+(parseInt(a.id,10)||0),kb=(b.ordre!=null&&!isNaN(b.ordre))?b.ordre:9000+(parseInt(b.id,10)||0);return ka-kb||((parseInt(a.id,10)||0)-(parseInt(b.id,10)||0));});
     renderRows();if(currentProduct)renderModalPrice();
     if(added)loadProductPhotos();
   }).catch(function(){});
