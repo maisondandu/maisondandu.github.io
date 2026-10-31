@@ -737,7 +737,7 @@ function renderRows(){
     var price=(p.noPrice?'':fmtMoney(curUnit(p)))+(out?'<span class="rupture">'+tt('rupture')+'</span>':'');
     var num='0'+(i+1);
     return '<div class="prod-row reveal'+rev+'">'
-      +'<div class="prod-media" onclick="openProduct('+p.id+')"><span class="num">'+num+'</span><img src="'+(p.hero||p.imgs[p.colors[0].label][0])+'" alt="'+p.name+'"></div>'
+      +'<div class="prod-media" onclick="openProduct('+p.id+')"><img src="'+(p.hero||p.imgs[p.colors[0].label][0])+'" alt="'+p.name+'"></div>'
       +'<div class="prod-txt"><span class="kicker">'+p.cat+'</span><h3>'+p.name+'</h3><p>'+p.desc+'</p><div class="prod-price">'+price+'</div>'
       +'<a class="link-u" onclick="openProduct('+p.id+')">'+tt('discover')+'</a></div></div>';
   }).join('');
