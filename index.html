@@ -655,6 +655,8 @@ function parseMoneyFR(v){if(v==null)return NaN;var s=String(v).replace(/[^\d.,]/
 function isOut(id){return STOCK[id]!==undefined&&STOCK[id]<=0;}
 /* URL de la Google Sheet (onglet produits). */
 var SHEET_URL='https://opensheet.elk.sh/1tfuZzdrdjV5IHpaWn4V2CIALDSwy6hkXVjeEtNQTo4U/1';
+/* Version des images : change à chaque publication (bouton Publier) pour forcer le rafraîchissement du cache. */
+var ASSET_V='20261101a';
 /* Transforme un texte en clé/slug : "Safran & Noir" -> "safran-noir" */
 function slugify(s){return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');}
 /* Crée un NOUVEAU produit à partir d'une ligne de la Sheet (colonnes : produit, Catégorie, Description, Couleurs, Dossier, Délai, Caractéristiques). */
@@ -705,8 +707,9 @@ function probeColor(folder,key,done){
     var ei=0;
     (function tryExt(){
       if(ei>=exts.length){done(found);return;}
-      fetch('assets/'+folder+'/'+key+'/'+i+'.'+exts[ei],{method:'HEAD'}).then(function(r){
-        if(r.ok){found.push('assets/'+folder+'/'+key+'/'+i+'.'+exts[ei]);i++;tryIdx();}else{ei++;tryExt();}
+      var u='assets/'+folder+'/'+key+'/'+i+'.'+exts[ei]+'?v='+ASSET_V;
+      fetch(u,{method:'HEAD'}).then(function(r){
+        if(r.ok){found.push(u);i++;tryIdx();}else{ei++;tryExt();}
       }).catch(function(){ei++;tryExt();});
     })();
   })();
@@ -735,9 +738,9 @@ function renderRows(){
     var rev=i%2===1?' rev':'';
     var out=isOut(p.id);
     var price=(p.noPrice?'':fmtMoney(curUnit(p)))+(out?'<span class="rupture">'+tt('rupture')+'</span>':'');
-    var num='0'+(i+1);
+    var hero=(p.hero||(p.imgs[p.colors[0].label]||[])[0]||'');if(hero&&hero.indexOf('?v=')<0)hero+='?v='+ASSET_V;
     return '<div class="prod-row reveal'+rev+'">'
-      +'<div class="prod-media" onclick="openProduct('+p.id+')"><img src="'+(p.hero||p.imgs[p.colors[0].label][0])+'" alt="'+p.name+'"></div>'
+      +'<div class="prod-media" onclick="openProduct('+p.id+')"><img src="'+hero+'" alt="'+p.name+'"></div>'
       +'<div class="prod-txt"><span class="kicker">'+p.cat+'</span><h3>'+p.name+'</h3><p>'+p.desc+'</p><div class="prod-price">'+price+'</div>'
       +'<a class="link-u" onclick="openProduct('+p.id+')">'+tt('discover')+'</a></div></div>';
   }).join('');
