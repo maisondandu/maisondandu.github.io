@@ -85,7 +85,7 @@ a{color:inherit;text-decoration:none;}
 .hero-in .btn{opacity:0;animation:rise 1.1s .95s forwards;}
 .hero-video{position:relative;height:100vh;min-height:560px;overflow:hidden;background:var(--noir);}
 .hv-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
-.hv-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(22,18,16,.18),rgba(22,18,16,0) 35%,rgba(22,18,16,.40));pointer-events:none;}
+.hv-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(22,18,16,.42),rgba(22,18,16,.32) 45%,rgba(22,18,16,.58));pointer-events:none;}
 .hv-cue{position:absolute;left:50%;bottom:1.4rem;transform:translateX(-50%);color:#fff;font-size:2rem;line-height:1;opacity:.85;animation:hvBounce 2s ease-in-out infinite;}
 @keyframes hvBounce{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,10px)}}
 @keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
@@ -348,17 +348,11 @@ textarea.co-in{resize:vertical;}
 </div>
 
 <!-- HERO -->
-<!-- HERO VIDÉO — Campagne -->
-<section class="hero-video">
+<section class="hero">
   <video class="hv-vid" autoplay muted loop playsinline preload="auto" poster="assets/campagne-poster.jpg">
     <source src="assets/campagne.mp4" type="video/mp4">
   </video>
   <div class="hv-veil"></div>
-  <div class="hv-cue" aria-hidden="true">⌄</div>
-</section>
-
-<section class="hero">
-  <div class="hero-bg" style="background-image:url('assets/hero-zona-1.jpg')"></div>
   <div class="hero-in">
     <div class="kicker" data-i18n="hero.k">Maison de Maroquinerie — Yaoundé, Cameroun</div>
     <h1 data-i18n="hero.h1">L'élégance africaine,<br><em>façonnée à la main.</em></h1>
