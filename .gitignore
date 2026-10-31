@@ -12,3 +12,5 @@
 
 # Photos brutes (non optimisees) deposees dans assets/ : gardees en local, jamais publiees
 assets/**/*.jpg.jpeg
+# Videos brutes (.mov) : on ne publie que le .mp4 optimise
+assets/**/*.mov
