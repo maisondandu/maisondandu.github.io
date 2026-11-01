@@ -155,6 +155,18 @@ a{color:inherit;text-decoration:none;}
 .invite{padding:8rem 2rem;text-align:center;background:var(--blanc);}
 .invite h2{font-size:clamp(2.2rem,4.5vw,3.6rem);font-weight:300;margin-bottom:1.2rem;}
 .invite p{color:var(--txt-doux);font-weight:300;max-width:520px;margin:0 auto 2.6rem;}
+.contact-wrap{max-width:940px;margin:2.8rem auto 0;display:grid;grid-template-columns:1fr 1.15fr;gap:3.4rem;text-align:left;align-items:start;}
+.contact-info .ci-h{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--or);margin:0 0 .35rem;}
+.contact-info .ci-h+ .ci-h{margin-top:0;}
+.contact-info p{color:var(--txt-doux);font-weight:300;line-height:1.7;max-width:none;margin:0 0 1.5rem;}
+.contact-info a{color:var(--txt);text-decoration:none;border-bottom:1px solid var(--ligne);transition:.25s;}
+.contact-info a:hover{color:var(--or);border-color:var(--or);}
+.contact-form .cf-row{display:flex;gap:1.2rem;}
+.contact-form .cf-row .co-in{flex:1;}
+.cf-send{margin-top:.5rem;}
+.cf-ok{display:none;margin-top:1.3rem;padding:1rem 1.2rem;background:#f3efe6;border-left:2px solid var(--or);color:var(--txt);font-weight:300;font-size:.88rem;line-height:1.65;}
+.cf-ok.show{display:block;}
+@media(max-width:760px){.contact-wrap{grid-template-columns:1fr;gap:2rem;margin-top:2rem;}.contact-form .cf-row{flex-direction:column;gap:0;}}
 
 /* ===== Footer ===== */
 footer{background:var(--noir);color:var(--ivoire);padding:5rem 3rem 0;}
@@ -232,9 +244,7 @@ footer{background:var(--noir);color:var(--ivoire);padding:5rem 3rem 0;}
 
 .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(120%);background:var(--noir);color:var(--ivoire);padding:1rem 2rem;font-size:0.74rem;letter-spacing:.14em;text-transform:uppercase;z-index:700;transition:transform .4s;}
 .toast.show{transform:translateX(-50%) translateY(0);}
-.wa-fab{position:fixed;bottom:1.6rem;right:1.6rem;width:54px;height:54px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.2);transition:.3s;}
-.wa-fab:hover{transform:scale(1.08);}
-.wa-fab svg{width:28px;height:28px;fill:#fff;}
+/* Bouton WhatsApp flottant retiré — remplacé par le formulaire de contact (#invite). */
 
 /* ===== Parallax editorial ===== */
 .parallax{height:82vh;min-height:500px;background-size:cover;background-position:center;background-attachment:fixed;position:relative;display:flex;align-items:center;justify-content:center;}
@@ -443,8 +453,34 @@ textarea.co-in{resize:vertical;}
 <section class="invite reveal" id="invite">
   <div class="kicker" data-i18n="inv.k">Prendre Contact</div>
   <h2 style="margin-top:1rem" data-i18n="inv.t">Entrez dans la Maison</h2>
-  <p data-i18n="inv.p">Pour une commande, une pièce sur-mesure ou une visite à la boutique Dovv Simbock, notre équipe vous accueille.</p>
-  <a class="btn gold" href="https://wa.me/237621213280?text=Bonjour%20DANDU%2C%20je%20vous%20%C3%A9cris%20depuis%20votre%20site." target="_blank" data-i18n="inv.btn">Nous écrire sur WhatsApp</a>
+  <p data-i18n="inv.p">Pour une commande, une pièce sur-mesure ou une visite à la boutique Dovv Simbock, notre équipe vous répond avec soin.</p>
+  <div class="contact-wrap">
+    <div class="contact-info">
+      <div class="ci-h" data-i18n="ct.boutiqueH">La Boutique</div>
+      <p>Dovv Simbock, Yaoundé<br>Cameroun</p>
+      <div class="ci-h" data-i18n="ct.hoursH">Horaires</div>
+      <p data-i18n="ct.hours">Lundi – Samedi · 9h – 19h</p>
+      <div class="ci-h" data-i18n="ct.directH">Nous joindre</div>
+      <p><a href="mailto:infodanducm@gmail.com">infodanducm@gmail.com</a><br><a href="https://www.instagram.com/danducm" target="_blank">Instagram → @danducm</a></p>
+    </div>
+    <form class="contact-form" id="contactForm" onsubmit="return sendContact(event)" novalidate>
+      <div class="cf-row">
+        <input class="co-in" id="ctName" data-i18n-ph="ct.name" placeholder="Nom *" autocomplete="name">
+        <input class="co-in" id="ctEmail" type="email" data-i18n-ph="ct.email" placeholder="Email *" autocomplete="email">
+      </div>
+      <input class="co-in" id="ctPhone" data-i18n-ph="ct.phone" placeholder="Téléphone (optionnel)" autocomplete="tel">
+      <select class="co-in" id="ctSubject" aria-label="Objet">
+        <option value="Commande" data-i18n="ct.s1">Une commande</option>
+        <option value="Sur-mesure" data-i18n="ct.s2">Une pièce sur-mesure</option>
+        <option value="Visite boutique" data-i18n="ct.s3">Une visite à la boutique</option>
+        <option value="Autre" data-i18n="ct.s4">Autre demande</option>
+      </select>
+      <textarea class="co-in" id="ctMessage" rows="4" data-i18n-ph="ct.msg" placeholder="Votre message *"></textarea>
+      <input type="text" id="ctCompany" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;">
+      <button type="submit" class="btn gold full cf-send" data-i18n="ct.send">Envoyer le message</button>
+      <div class="cf-ok" id="ctOk" data-i18n="ct.ok">Merci, votre message a bien été transmis à la Maison. Nous vous répondrons très vite.</div>
+    </form>
+  </div>
 </section>
 
 <!-- FOOTER -->
@@ -544,9 +580,7 @@ textarea.co-in{resize:vertical;}
   <div class="co-success" id="coSuccess"></div>
 </div>
 
-<a class="wa-fab" href="https://wa.me/237621213280?text=Bonjour%20DANDU%20%F0%9F%91%8B" target="_blank" aria-label="WhatsApp">
-  <svg viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.738-.985zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
-</a>
+<!-- Bouton WhatsApp flottant retiré : remplacé par le formulaire de contact (section #invite). -->
 
 <div class="toast" id="toast"></div>
 
@@ -624,7 +658,8 @@ var I18N={en:{
  'sav.k':'Our Standard','sav.t':'Savoir-Faire','sav.1t':'Creation','sav.1p':'An original design, inspired by African art and contemporary lines.','sav.2t':'Craftsmanship','sav.2p':'Each piece is handmade by our artisans, in Yaoundé.','sav.3t':'Transmission','sav.3p':'From the Simbock boutique to the world, a heritage that radiates.',
  'mon.k':'The House Worldwide','mon.t':'Cameroonian savoir-faire, recognised beyond borders.','mon.p':'DANDU was selected for the Africa–China Successful Startups Exchange Program — an international distinction that crowns the excellence of our craftsmanship.','mon.y1':'Founding · Yaoundé','mon.y2':'Silk Road · Changsha','mon.y3':'Intangible Heritage',
  'rev.k':'Testimonials','rev.t':'They chose DANDU','rev.leave':'Leave a review','rev.ft':'Leave a review','rev.send':'Post my review','rev.thanks':'Thank you for your review!','rev.np':'Your name','rev.tp':'Share your experience…',
- 'inv.k':'Get in Touch','inv.t':'Enter the House','inv.p':'For an order, a bespoke piece or a visit to the Dovv Simbock boutique, our team welcomes you.','inv.btn':'Message us on WhatsApp',
+ 'inv.k':'Get in Touch','inv.t':'Enter the House','inv.p':'For an order, a bespoke piece or a visit to the Dovv Simbock boutique, our team is here for you.',
+ 'ct.boutiqueH':'The Boutique','ct.hoursH':'Opening Hours','ct.hours':'Monday – Saturday · 9am – 7pm','ct.directH':'Reach Us','ct.name':'Name *','ct.email':'Email *','ct.phone':'Phone (optional)','ct.s1':'An order','ct.s2':'A bespoke piece','ct.s3':'A boutique visit','ct.s4':'Other enquiry','ct.msg':'Your message *','ct.send':'Send message','ct.ok':'Thank you, your message has reached the House. We will reply very soon.',
  'foot.desc':'Leather goods atelier.<br>Founded in 2017 in Yaoundé<br>by Daniel &amp; Urweiller.','foot.c1':'Collections','foot.z':'Zona Bag','foot.y':'Yao Boy Sandals','foot.kl':'Kléopé Bag','foot.ka':'Kana Bag','foot.c2':'The House','foot.her':'The Heritage','foot.sav':'Savoir-Faire','foot.con':'Contact','foot.c3':'Boutique','foot.hours':'Mon–Sat · 9am–7pm','foot.copy':'© 2026 DANDU — Daniel &amp; Urweiller. All rights reserved.',
  'ui.colour':'Colour','cart.t':'Your Cart','cart.checkout':'Order on WhatsApp','cart.note':'Reservation and payment finalised with the House via WhatsApp.','co.order':'Order','co.k':'Order','co.title':'Complete your order','co.name':'Full name *','co.email':'Email *','co.phone':'Phone (WhatsApp) *','co.city':'City / Area','co.cash':'Cash on delivery','co.transfer':'Bank transfer','co.note':'Notes (optional)','co.submit':'Place my order','co.info':"You'll receive a confirmation email. Payment is arranged with the House.",'co.wa':'or finalise via WhatsApp'
 }};
@@ -833,6 +868,22 @@ function submitOrder(){
   window.open(waUrl,'_blank');
   var s=document.getElementById('coSuccess');s.textContent=(LANG==='en'?'Order sent on WhatsApp — ref ':'Commande envoyée sur WhatsApp — réf ')+ref;s.classList.add('show');
   setTimeout(closeCheckout,2800);
+}
+
+/* ===== Prise de contact (formulaire → script → email + WhatsApp, sans redirection) ===== */
+function sendContact(ev){
+  if(ev&&ev.preventDefault)ev.preventDefault();
+  var v=function(id){var el=document.getElementById(id);return el?(el.value||'').trim():'';};
+  var name=v('ctName'),email=v('ctEmail'),phone=v('ctPhone'),subject=v('ctSubject'),message=v('ctMessage'),company=v('ctCompany');
+  if(company){return false;} /* piège anti-robot : un humain ne remplit pas ce champ caché */
+  if(!name||!email||!message){toast(LANG==='en'?'Name, email and message are required':'Nom, email et message requis');return false;}
+  if(!/^\S+@\S+\.\S+$/.test(email)){toast(LANG==='en'?'Invalid email':'Email invalide');return false;}
+  var payload={type:'contact',name:name,email:email,phone:phone,subject:subject,message:message,lang:LANG};
+  if(ORDERS_POST){try{fetch(ORDERS_POST,{method:'POST',body:JSON.stringify(payload)});}catch(e){}}
+  ['ctName','ctEmail','ctPhone','ctMessage'].forEach(function(id){var el=document.getElementById(id);if(el)el.value='';});
+  var ok=document.getElementById('ctOk');if(ok)ok.classList.add('show');
+  var btn=document.querySelector('#contactForm .cf-send');if(btn){btn.disabled=true;btn.style.opacity=.5;btn.style.pointerEvents='none';btn.textContent=(LANG==='en'?'Message sent ✓':'Message envoyé ✓');}
+  return false;
 }
 
 /* ===== UI helpers ===== */
