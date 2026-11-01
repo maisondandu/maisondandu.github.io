@@ -687,7 +687,7 @@ function loadStock(){
       var pr=parseInt(String(row['Prix en FCFA']||row.Prix||'').replace(/[^0-9]/g,''),10);
       var pe=parseMoneyFR(row['Prix en Euro']||row['Prix en euro']||row.Euro);
       var ord=parseInt(String(row['Ordre']||row.ordre||'').replace(/[^0-9]/g,''),10);
-      var stripe=String(row['Lien Stripe']||row['Lien paiement']||row.Stripe||'').trim();
+      var stripe='';for(var sk in row){if(/stripe/i.test(sk)&&String(row[sk]||'').trim()){stripe=String(row[sk]).trim();break;}}
       var p=products.find(function(x){return String(x.id)===id;});
       if(p){if(!isNaN(pr)&&pr>0){p.price=pr;p.noPrice=false;}else{p.noPrice=true;}if(!isNaN(pe)&&pe>0)p.priceEUR=pe;if(!isNaN(ord))p.ordre=ord;p.stripe=stripe;}
       else{var np=makeProductFromRow(row,id,pr,pe);if(np){if(!isNaN(ord))np.ordre=ord;np.stripe=stripe;products.push(np);added=true;}}
